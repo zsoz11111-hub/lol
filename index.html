@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, orientation=landscape">
+    <title>소환사의 협곡에 오신 것을 환영합니다</title>
+    <style>
+        :root {
+            --lol-gold: #c8aa6e;
+            --lol-blue: #0bc6e3;
+            --lol-dark: #010a13;
+            --lol-border: #3c3c41;
+        }
+
+        body, html {
+            margin: 0; padding: 0; width: 100%; height: 100%;
+            overflow: hidden; background-color: black;
+            font-family: 'Noto Sans KR', sans-serif; color: white;
+        }
+
+        /* 가로 모드 유도 */
+        @media (orientation: portrait) {
+            #rotate-overlay { display: flex; }
+        }
+        #rotate-overlay {
+            display: none; position: fixed; z-index: 9999;
+            width: 100%; height: 100%; background: var(--lol-dark);
+            flex-direction: column; align-items: center; justify-content: center;
+        }
+
+        /* 공통 배경 */
+        .screen {
+            position: absolute; width: 100%; height: 100%;
+            transition: opacity 0.8s ease; display: flex;
+        }
+
+        /* --- 1단계: 로그인 화면 --- */
+        #login-screen {
+            background: url('https://imgur.com/your-login-bg.jpg') center/cover; /* 로그인 배경이미지 */
+            z-index: 2;
+        }
+        .login-box {
+            width: 30%; height: 100%; background: rgba(255,255,255,0.9);
+            color: #111; display: flex; flex-direction: column;
+            padding: 40px; box-sizing: border-box; justify-content: center;
+        }
+        .login-input {
+            width: 100%; padding: 15px; margin: 10px 0;
+            border: 1px solid #ccc; background: #f0f0f0;
+        }
+        .login-btn {
+            margin-top: 20px; padding: 15px;
+            background: var(--lol-blue); border: none; color: white;
+            font-weight: bold; cursor: pointer; font-size: 1.1rem;
+        }
+
+        /* --- 2단계: 메인 로비 화면 --- */
+        #lobby-screen {
+            background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('https://imgur.com/your-lobby-bg.jpg') center/cover;
+            opacity: 0; z-index: 1;
+        }
+
+        /* 왼쪽 메뉴바 */
+        .side-nav {
+            width: 200px; height: 100%; background: rgba(0,0,0,0.7);
+            border-right: 1px solid var(--lol-border);
+            display: flex; flex-direction: column; padding-top: 50px;
+        }
+        .nav-item {
+            padding: 15px 25px; cursor: pointer; font-size: 0.9rem;
+            border-left: 3px solid transparent; transition: 0.3s;
+            text-transform: uppercase; letter-spacing: 1px;
+        }
+        .nav-item:hover {
+            background: rgba(200, 170, 110, 0.1); border-left: 3px solid var(--lol-gold);
+            color: var(--lol-gold);
+        }
+        .start-btn {
+            background: #1e2328; border: 2px solid var(--lol-gold);
+            color: var(--lol-gold); padding: 10px; margin: 20px;
+            text-align: center; font-weight: bold; cursor: pointer;
+        }
+
+        /* 중앙 콘텐츠 */
+        .main-content {
+            flex: 1; display: flex; flex-direction: column;
+            justify-content: center; padding: 50px;
+        }
+        .wedding-title { font-size: 3rem; font-weight: 900; color: var(--lol-gold); }
+        .wedding-desc { font-size: 1.2rem; max-width: 500px; line-height: 1.6; margin-top: 20px; }
+
+        /* 오른쪽 친구창 */
+        .friend-list {
+            width: 250px; background: rgba(0,0,0,0.8);
+            border-left: 1px solid var(--lol-border); padding: 20px;
+        }
+        .friend-item { display: flex; align-items: center; margin-bottom: 15px; }
+        .status-online { color: #2ecc71; font-size: 0.8rem; }
+
+        .hidden { opacity: 0 !important; pointer-events: none; }
+    </style>
+</head>
+<body>
+
+    <div id="rotate-overlay"> 화면을 가로로 돌려주세요 🔄 </div>
+
+    <div id="login-screen" class="screen">
+        <div class="login-box">
+            <h1 style="font-size: 2rem;">로그인</h1>
+            <input type="text" class="login-input" placeholder="신랑 이름 (ID)">
+            <input type="password" class="login-input" placeholder="신부 이름 (PW)">
+            <button class="login-btn" onclick="goToLobby()">로그인</button>
+            <p style="font-size: 0.8rem; color: #666; margin-top: 20px; text-align: center;">계정이 없으신가요? <br>축복하러 오시면 자동 생성됩니다.</p>
+        </div>
+    </div>
+
+    <div id="lobby-screen" class="screen">
+        <div class="side-nav">
+            <div class="start-btn">예식장 확인하기</div>
+            <div class="nav-item" onclick="alert('202X년 X월 X일')">날짜 확인</div>
+            <div class="nav-item">신랑측 계좌</div>
+            <div class="nav-item">신부측 계좌</div>
+            <div class="nav-item">방명록 작성</div>
+        </div>
+
+        <div class="main-content">
+            <div class="wedding-title">신랑 OO & 신부 OO</div>
+            <div class="wedding-desc">
+                그들은 서로가 죽음으로 모든 게 끝날 줄 알았습니다. <br>
+                하지만, 그것은 오산이었습니다. <br>
+                새로운 랭크 게임(결혼)이 시작됩니다.
+            </div>
+            <button style="margin-top: 40px; width: 150px; background: var(--lol-gold); border: none; padding: 10px; cursor: pointer;">갤러리 보기</button>
+        </div>
+
+        <div class="friend-list">
+            <div style="font-weight: bold; border-bottom: 1px solid #333; padding-bottom: 10px; margin-bottom: 15px;">소셜 (가족)</div>
+            <div class="friend-item">
+                <div style="width: 35px; height: 35px; background: #555; border-radius: 50%; margin-right: 10px;"></div>
+                <div>
+                    <div>신랑 부친 OOO</div>
+                    <div class="status-online">● 온라인</div>
+                </div>
+            </div>
+            <div class="friend-item">
+                <div style="width: 35px; height: 35px; background: #555; border-radius: 50%; margin-right: 10px;"></div>
+                <div>
+                    <div>신부 부친 OOO</div>
+                    <div class="status-online">● 온라인</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function goToLobby() {
+            document.getElementById('login-screen').classList.add('hidden');
+            document.getElementById('lobby-screen').style.opacity = '1';
+        }
+    </script>
+</body>
+</html>
