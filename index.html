@@ -11,7 +11,7 @@
             --lol-dark: #010a13;
             --lol-border: #3c3c41;
             --lol-bg-dark: #0a1428;
-            --riot-red: #eb0029; /* 라이엇 게임즈 시그니처 레드 */
+            --riot-red: #eb0029; 
         }
 
         body, html {
@@ -20,7 +20,6 @@
             font-family: 'Noto Sans KR', sans-serif; color: white;
         }
 
-        /* 가로 모드 유도 */
         @media (orientation: portrait) {
             #rotate-overlay { display: flex; }
         }
@@ -33,70 +32,45 @@
         .screen { position: absolute; width: 100%; height: 100%; transition: opacity 0.5s ease; display: flex; }
         .hidden { opacity: 0 !important; pointer-events: none; display: none !important; }
 
-        /* --- 1단계: 모던 라이엇 로그인 화면 --- */
-        #login-screen {
-            display: flex; flex-direction: row; background: #fff; z-index: 4;
-        }
+        /* --- 1단계: 심플 모던 로그인 화면 --- */
+        #login-screen { display: flex; flex-direction: row; background: #fff; z-index: 4; }
         .login-left {
             width: 35%; min-width: 250px; max-width: 400px; background: #fff; 
-            display: flex; flex-direction: column; align-items: center; padding: 4vh 0;
-            color: #111; box-sizing: border-box; position: relative;
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            color: #111; box-sizing: border-box; padding: 0 20px;
         }
-        .login-right {
-            flex: 1; background: url('login-bg.jpg') center/cover no-repeat; /* 오른쪽 배경 사진 */
-        }
+        .login-right { flex: 1; background: url('login-bg.jpg') center/cover no-repeat; }
         
         .riot-logo { color: var(--riot-red); font-weight: 900; font-size: 1.5rem; margin-bottom: 3vh; letter-spacing: -1px; display: flex; align-items: center; gap: 5px; }
-        .riot-logo::before { content: '👊'; font-size: 1.8rem; } /* 주먹 로고 대체 */
+        .riot-logo::before { content: '👊'; font-size: 1.8rem; }
         
-        .login-title { font-size: 1.2rem; font-weight: bold; margin-bottom: 2vh; width: 75%; text-align: left; }
+        .login-title { font-size: 1.2rem; font-weight: bold; margin-bottom: 3vh; width: 80%; text-align: left; }
         
+        /* 닉네임 입력칸 및 버튼 심플화 */
         .modern-input {
-            width: 75%; padding: 12px; margin-bottom: 10px; background: #ededed;
-            border: none; border-radius: 4px; font-size: 0.85rem; font-weight: bold; color: #333; outline: none;
+            width: 80%; padding: 12px; margin-bottom: 15px; background: #ededed;
+            border: none; border-radius: 4px; font-size: 0.9rem; font-weight: bold; color: #333; outline: none;
         }
         .modern-input::placeholder { color: #aaa; font-weight: normal; }
         
-        /* 가짜 소셜 버튼 (디테일용) */
-        .social-login { display: flex; gap: 5px; width: 75%; margin-bottom: 10px; }
-        .social-btn { flex: 1; height: 35px; border-radius: 4px; display: flex; justify-content: center; align-items: center; color: white; font-weight: bold; font-size: 0.9rem; cursor: pointer; }
-        .fb { background: #1877f2; }
-        .gg { background: #fff; border: 1px solid #ddd; color: #555; }
-        .ap { background: #000; }
-        
-        /* 로그인 상태 유지 체크박스 */
-        .keep-login { width: 75%; text-align: left; font-size: 0.75rem; color: #777; margin-bottom: 3vh; display: flex; align-items: center; gap: 5px; font-weight: bold; }
-        
-        /* 화살표 로그인 버튼 */
-        .login-action { width: 100%; display: flex; justify-content: center; margin-top: auto; margin-bottom: 2vh; }
-        .modern-btn-login {
-            width: 60px; height: 60px; border-radius: 20px; border: 2px solid #eee; background: white;
-            color: #ccc; font-size: 1.5rem; cursor: pointer; display: flex; justify-content: center; align-items: center; transition: 0.3s;
+        .btn-login {
+            width: 80%; padding: 12px; background: var(--riot-red); 
+            border: none; color: white; font-weight: bold; border-radius: 4px;
+            font-size: 1rem; cursor: pointer; margin-bottom: 10px; transition: 0.3s;
         }
-        .modern-btn-login:hover { border-color: var(--riot-red); color: white; background: var(--riot-red); }
-        
-        /* 게스트 입장 (계정 생성 위치) */
-        .login-footer { font-size: 0.7rem; color: #999; text-align: center; margin-top: 1vh; font-weight: bold; }
-        .login-footer span { cursor: pointer; transition: 0.2s; }
-        .login-footer span:hover { color: var(--riot-red); }
+        .btn-guest {
+            width: 80%; padding: 12px; background: transparent; 
+            border: 2px solid #ddd; color: #555; border-radius: 4px;
+            font-weight: bold; font-size: 1rem; cursor: pointer; transition: 0.3s;
+        }
+        .btn-login:hover { filter: brightness(1.2); }
+        .btn-guest:hover { background: #f5f5f5; color: #111; border-color: #bbb; }
 
         /* --- 2단계: 큐 수락 화면 --- */
-        #queue-screen {
-            background-color: rgba(0, 0, 0, 0.95); z-index: 3;
-            justify-content: center; align-items: center; flex-direction: column;
-        }
-        .circle-container {
-            position: relative; width: 45vh; height: 45vh; min-width: 250px; min-height: 250px;
-            border-radius: 50%; background: radial-gradient(circle, #0a1428 0%, #000000 100%);
-            display: flex; flex-direction: column; justify-content: center; align-items: center;
-            border: 2px solid #005a82; box-shadow: 0 0 20px #0ac8b9; animation: pulse 2s infinite;
-        }
+        #queue-screen { background-color: rgba(0, 0, 0, 0.95); z-index: 3; justify-content: center; align-items: center; flex-direction: column; }
+        .circle-container { position: relative; width: 45vh; height: 45vh; min-width: 250px; min-height: 250px; border-radius: 50%; background: radial-gradient(circle, #0a1428 0%, #000000 100%); display: flex; flex-direction: column; justify-content: center; align-items: center; border: 2px solid #005a82; box-shadow: 0 0 20px #0ac8b9; animation: pulse 2s infinite; }
         @keyframes pulse { 0% { box-shadow: 0 0 10px #0ac8b9; } 50% { box-shadow: 0 0 40px #0bc6e3; } 100% { box-shadow: 0 0 10px #0ac8b9; } }
-        #accept-btn {
-            margin-top: 2vh; padding: 1vh 4vw; background-color: transparent;
-            color: var(--lol-gold); border: 2px solid var(--lol-gold);
-            font-size: 1.2rem; font-weight: bold; cursor: pointer; transition: 0.3s;
-        }
+        #accept-btn { margin-top: 2vh; padding: 1vh 4vw; background-color: transparent; color: var(--lol-gold); border: 2px solid var(--lol-gold); font-size: 1.2rem; font-weight: bold; cursor: pointer; transition: 0.3s; }
         #accept-btn:hover { background: rgba(200, 170, 110, 0.2); box-shadow: 0 0 15px var(--lol-gold); }
 
         /* --- 3단계: 픽창 화면 --- */
@@ -139,28 +113,10 @@
             <div class="riot-logo">WEDDING GAMES</div>
             <div class="login-title">로그인</div>
             
-            <input type="text" id="nickname-input" class="modern-input" placeholder="소환사명 (닉네임)">
-            <input type="password" class="modern-input" placeholder="비밀번호" style="display:none;"> <div class="social-login">
-                <div class="social-btn fb">f</div>
-                <div class="social-btn gg"><span style="color:red;">G</span></div>
-                <div class="social-btn ap"></div>
-            </div>
-
-            <div class="keep-login">
-                <input type="checkbox" id="keep-log" checked>
-                <label for="keep-log">로그인 상태 유지</label>
-            </div>
-
-            <div class="login-action">
-                <button class="modern-btn-login" onclick="login(false)">➔</button>
-            </div>
-
-            <div class="login-footer">
-                로그인이 안 되시나요? <br><br>
-                <span onclick="login(true)">게스트로 입장하기</span>
-            </div>
+            <input type="text" id="nickname-input" class="modern-input" placeholder="소환사명 (닉네임) 입력">
+            <button class="btn-login" onclick="login(false)">로그인</button>
+            <button class="btn-guest" onclick="login(true)">게스트로 입장하기</button>
         </div>
-        
         <div class="login-right"></div>
     </div>
 
@@ -228,6 +184,11 @@
         }
 
         function goToPick() {
+            // 3단계 진입 시 브금 재생
+            const bgm = document.getElementById('lobby-bgm');
+            bgm.volume = 0.3; 
+            bgm.play().catch(e => console.log("BGM 재생 차단됨", e));
+
             document.getElementById('queue-screen').classList.add('hidden');
             const pickScreen = document.getElementById('pick-screen');
             pickScreen.style.opacity = '1';
@@ -235,9 +196,11 @@
         }
 
         function startGame() {
+            // 4단계 진입 시 3단계 브금 정지
             const bgm = document.getElementById('lobby-bgm');
-            bgm.volume = 0.3; 
-            bgm.play().catch(e => console.log("BGM 재생 차단됨", e));
+            bgm.pause();
+            
+            // 만약 4단계 전용 BGM을 추가하신다면 이 부분에 play() 코드를 작성하시면 됩니다.
 
             const pickScreen = document.getElementById('pick-screen');
             pickScreen.classList.add('hidden');
