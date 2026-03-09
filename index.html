@@ -34,10 +34,10 @@
             transition: opacity 0.8s ease; display: flex;
         }
 
-        /* --- 0단계: 큐 수락 화면 (새로 추가됨) --- */
+        /* --- 0단계: 큐 수락 화면 --- */
         #queue-screen {
             background-color: rgba(0, 0, 0, 0.9);
-            z-index: 3; /* 로그인 화면보다 위에 오도록 설정 */
+            z-index: 3;
             justify-content: center;
             align-items: center;
             flex-direction: column;
@@ -52,7 +52,7 @@
             justify-content: center; align-items: center;
             border: 2px solid #005a82;
             box-shadow: 0 0 20px #0ac8b9;
-            animation: pulse 2s infinite; /* 큐 잡혔을 때 깜빡이는 효과 */
+            animation: pulse 2s infinite;
         }
 
         @keyframes pulse {
@@ -75,30 +75,10 @@
             box-shadow: 0 0 15px var(--lol-gold);
         }
 
-        /* --- 1단계: 로그인 화면 --- */
-        #login-screen {
-            background: url('https://imgur.com/your-login-bg.jpg') center/cover;
-            z-index: 2;
-        }
-        .login-box {
-            width: 30%; height: 100%; background: rgba(255,255,255,0.9);
-            color: #111; display: flex; flex-direction: column;
-            padding: 40px; box-sizing: border-box; justify-content: center;
-        }
-        .login-input {
-            width: 100%; padding: 15px; margin: 10px 0;
-            border: 1px solid #ccc; background: #f0f0f0; box-sizing: border-box;
-        }
-        .login-btn {
-            margin-top: 20px; padding: 15px;
-            background: var(--lol-blue); border: none; color: white;
-            font-weight: bold; cursor: pointer; font-size: 1.1rem;
-        }
-
-        /* --- 2단계: 메인 로비 화면 --- */
+        /* --- 1단계: 메인 로비 화면 --- */
         #lobby-screen {
             background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('https://imgur.com/your-lobby-bg.jpg') center/cover;
-            opacity: 0; z-index: 1; pointer-events: none; /* 숨겨져 있을 때 클릭 방지 */
+            opacity: 0; z-index: 1; pointer-events: none;
         }
 
         /* 왼쪽 메뉴바 */
@@ -145,23 +125,13 @@
 
     <div id="rotate-overlay"> 화면을 가로로 돌려주세요 🔄 </div>
 
-    <audio id="accept-sound" src="https://www.soundjay.com/buttons/sounds/button-09.mp3" preload="auto"></audio>
+    <audio id="accept-sound" src="queue-pop.mp3" preload="auto"></audio>
 
     <div id="queue-screen" class="screen">
         <div class="circle-container">
             <h2 style="font-size: 2rem; margin-bottom: 10px;">게임을 찾았습니다!</h2>
             <p style="color: #a09b8c; font-size: 1rem; margin-top: 0;">소환사의 협곡 • 영원한 듀오 • 2인큐</p>
             <button id="accept-btn" onclick="acceptGame()">수락!</button>
-        </div>
-    </div>
-
-    <div id="login-screen" class="screen">
-        <div class="login-box">
-            <h1 style="font-size: 2rem;">로그인</h1>
-            <input type="text" class="login-input" placeholder="신랑 이름 (ID)">
-            <input type="password" class="login-input" placeholder="신부 이름 (PW)">
-            <button class="login-btn" onclick="goToLobby()">로그인</button>
-            <p style="font-size: 0.8rem; color: #666; margin-top: 20px; text-align: center;">계정이 없으신가요? <br>축복하러 오시면 자동 생성됩니다.</p>
         </div>
     </div>
 
@@ -204,7 +174,7 @@
     </div>
 
     <script>
-        // 1. 큐 수락 버튼 클릭 시 실행되는 함수
+        // 수락 버튼 클릭 시 실행되는 함수 (로그인 화면 없이 바로 로비로 이동)
         function acceptGame() {
             // 효과음 재생
             const sound = document.getElementById('accept-sound');
@@ -212,17 +182,13 @@
                 console.log("브라우저 정책으로 인해 소리 자동 재생이 차단되었을 수 있습니다.");
             });
 
-            // 큐 수락 화면 숨기기 (페이드 아웃)
+            // 큐 수락 화면 숨기기
             document.getElementById('queue-screen').classList.add('hidden');
-        }
-
-        // 2. 로그인 버튼 클릭 시 실행되는 함수
-        function goToLobby() {
-            document.getElementById('login-screen').classList.add('hidden');
             
+            // 로비 화면 나타내기
             const lobbyScreen = document.getElementById('lobby-screen');
             lobbyScreen.style.opacity = '1';
-            lobbyScreen.style.pointerEvents = 'auto'; // 화면이 나타난 후 클릭 가능하도록 설정
+            lobbyScreen.style.pointerEvents = 'auto';
         }
     </script>
 </body>
