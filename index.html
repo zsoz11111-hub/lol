@@ -28,122 +28,87 @@
             flex-direction: column; align-items: center; justify-content: center;
         }
 
-        /* 공통 배경 */
+        /* 공통 화면 설정 */
         .screen {
             position: absolute; width: 100%; height: 100%;
-            transition: opacity 0.8s ease; display: flex;
+            transition: opacity 0.5s ease; display: flex;
         }
 
-        /* --- 입장 커버 화면 (사운드 자동재생 정책 우회용) --- */
-        #enter-screen {
-            background-color: var(--lol-dark);
-            z-index: 4;
-            justify-content: center;
-            align-items: center;
-            flex-direction: column;
+        /* --- -1단계: 로그인 화면 (모바일 팝업 형태) --- */
+        #login-screen {
+            background: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), url('https://imgur.com/your-login-bg.jpg') center/cover;
+            z-index: 4; justify-content: center; align-items: center;
         }
-        
-        #enter-btn {
-            padding: 15px 40px; 
-            background: transparent; 
-            border: 2px solid var(--lol-blue); 
-            color: var(--lol-blue); 
-            font-size: 1.2rem; 
-            font-weight: bold; 
-            cursor: pointer; 
-            transition: 0.3s;
+        .login-box {
+            background: rgba(1, 10, 19, 0.9); padding: 5vw; 
+            border: 2px solid var(--lol-gold); text-align: center; 
+            width: 80%; max-width: 350px; border-radius: 10px;
         }
+        .login-input {
+            width: 100%; padding: 12px; margin-bottom: 15px; 
+            box-sizing: border-box; background: #111; 
+            border: 1px solid var(--lol-blue); color: white; font-size: 1rem;
+        }
+        .btn-login {
+            width: 100%; padding: 12px; background: var(--lol-blue); 
+            border: none; color: white; font-weight: bold; 
+            font-size: 1.1rem; cursor: pointer; margin-bottom: 10px; transition: 0.3s;
+        }
+        .btn-guest {
+            width: 100%; padding: 12px; background: transparent; 
+            border: 1px solid var(--lol-gold); color: var(--lol-gold); 
+            font-weight: bold; font-size: 1rem; cursor: pointer; transition: 0.3s;
+        }
+        .btn-login:hover, .btn-guest:hover { filter: brightness(1.2); }
 
-        #enter-btn:hover {
-            background: rgba(11, 198, 227, 0.2);
-            box-shadow: 0 0 15px var(--lol-blue);
-        }
-
-        /* --- 0단계: 큐 수락 화면 --- */
+        /* --- 0단계: 큐 수락 화면 (모바일 비율 조정) --- */
         #queue-screen {
-            background-color: rgba(0, 0, 0, 0.9);
-            z-index: 3;
-            justify-content: center;
-            align-items: center;
-            flex-direction: column;
+            background-color: rgba(0, 0, 0, 0.95); z-index: 3;
+            justify-content: center; align-items: center; flex-direction: column;
         }
-        
         .circle-container {
-            position: relative;
-            width: 350px; height: 350px;
-            border-radius: 50%;
-            background: radial-gradient(circle, #0a1428 0%, #000000 100%);
-            display: flex; flex-direction: column;
-            justify-content: center; align-items: center;
-            border: 2px solid #005a82;
-            box-shadow: 0 0 20px #0ac8b9;
-            animation: pulse 2s infinite;
+            position: relative; width: 45vh; height: 45vh; min-width: 250px; min-height: 250px;
+            border-radius: 50%; background: radial-gradient(circle, #0a1428 0%, #000000 100%);
+            display: flex; flex-direction: column; justify-content: center; align-items: center;
+            border: 2px solid #005a82; box-shadow: 0 0 20px #0ac8b9; animation: pulse 2s infinite;
         }
-
         @keyframes pulse {
             0% { box-shadow: 0 0 10px #0ac8b9; }
             50% { box-shadow: 0 0 40px #0bc6e3; }
             100% { box-shadow: 0 0 10px #0ac8b9; }
         }
-
         #accept-btn {
-            margin-top: 30px; padding: 12px 50px;
-            background-color: transparent;
-            color: var(--lol-gold);
-            border: 2px solid var(--lol-gold);
-            font-size: 1.2rem; font-weight: bold;
-            cursor: pointer; transition: 0.3s;
+            margin-top: 2vh; padding: 1vh 4vw; background-color: transparent;
+            color: var(--lol-gold); border: 2px solid var(--lol-gold);
+            font-size: 1.2rem; font-weight: bold; cursor: pointer; transition: 0.3s;
         }
 
-        #accept-btn:hover {
-            background: rgba(200, 170, 110, 0.2);
-            box-shadow: 0 0 15px var(--lol-gold);
-        }
-
-        /* --- 1단계: 메인 로비 화면 --- */
+        /* --- 1단계: 메인 로비 화면 (모바일 꽉 찬 레이아웃) --- */
         #lobby-screen {
-            background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('https://imgur.com/your-lobby-bg.jpg') center/cover;
-            opacity: 0; z-index: 1; pointer-events: none;
+            background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url('https://imgur.com/your-lobby-bg.jpg') center/cover;
+            opacity: 0; z-index: 1; pointer-events: none; flex-direction: row;
         }
-
-        /* 왼쪽 메뉴바 */
         .side-nav {
-            width: 200px; height: 100%; background: rgba(0,0,0,0.7);
-            border-right: 1px solid var(--lol-border);
-            display: flex; flex-direction: column; padding-top: 50px;
+            width: 25%; max-width: 150px; background: rgba(0,0,0,0.8);
+            border-right: 1px solid var(--lol-border); display: flex; flex-direction: column; padding-top: 2vh;
         }
         .nav-item {
-            padding: 15px 25px; cursor: pointer; font-size: 0.9rem;
-            border-left: 3px solid transparent; transition: 0.3s;
-            text-transform: uppercase; letter-spacing: 1px;
+            padding: 2vh 1vw; cursor: pointer; font-size: 0.8rem;
+            border-left: 3px solid transparent; text-align: center;
         }
-        .nav-item:hover {
-            background: rgba(200, 170, 110, 0.1); border-left: 3px solid var(--lol-gold);
-            color: var(--lol-gold);
-        }
-        .start-btn {
-            background: #1e2328; border: 2px solid var(--lol-gold);
-            color: var(--lol-gold); padding: 10px; margin: 20px;
-            text-align: center; font-weight: bold; cursor: pointer;
-        }
-
-        /* 중앙 콘텐츠 */
+        .nav-item:hover { background: rgba(200, 170, 110, 0.1); border-left: 3px solid var(--lol-gold); color: var(--lol-gold); }
         .main-content {
-            flex: 1; display: flex; flex-direction: column;
-            justify-content: center; padding: 50px;
+            flex: 1; display: flex; flex-direction: column; justify-content: center; padding: 0 4vw;
         }
-        .wedding-title { font-size: 3rem; font-weight: 900; color: var(--lol-gold); }
-        .wedding-desc { font-size: 1.2rem; max-width: 500px; line-height: 1.6; margin-top: 20px; }
-
-        /* 오른쪽 친구창 */
+        .wedding-title { font-size: 2rem; font-weight: 900; color: var(--lol-gold); }
+        .wedding-desc { font-size: 0.9rem; max-width: 100%; line-height: 1.5; margin-top: 15px; }
         .friend-list {
-            width: 250px; background: rgba(0,0,0,0.8);
-            border-left: 1px solid var(--lol-border); padding: 20px;
+            width: 30%; max-width: 200px; background: rgba(0,0,0,0.85);
+            border-left: 1px solid var(--lol-border); padding: 2vh 2vw; overflow-y: auto;
         }
-        .friend-item { display: flex; align-items: center; margin-bottom: 15px; }
-        .status-online { color: #2ecc71; font-size: 0.8rem; }
-
-        .hidden { opacity: 0 !important; pointer-events: none; }
+        .friend-item { display: flex; align-items: center; margin-bottom: 1.5vh; font-size: 0.8rem; }
+        .status-online { color: #2ecc71; font-size: 0.7rem; }
+        .hidden { opacity: 0 !important; pointer-events: none; display: none !important; }
     </style>
 </head>
 <body>
@@ -153,23 +118,27 @@
     <audio id="accept-sound" src="queue-pop.mp3" preload="auto"></audio>
     <audio id="lobby-bgm" src="lobby-bgm.mp3" loop preload="auto"></audio>
 
-    <div id="enter-screen" class="screen">
-        <h1 style="color: var(--lol-gold); margin-bottom: 30px; font-size: 1.8rem; text-align: center;">새로운 랭크 게임이 준비되었습니다.</h1>
-        <button id="enter-btn" onclick="enterInvitation()">클라이언트 실행 (입장)</button>
+    <div id="login-screen" class="screen">
+        <div class="login-box">
+            <h1 style="color: var(--lol-gold); margin-bottom: 20px; font-size: 1.5rem;">클라이언트 접속</h1>
+            <input type="text" id="nickname-input" class="login-input" placeholder="소환사명 (닉네임) 입력">
+            <button class="btn-login" onclick="login(false)">로그인</button>
+            <button class="btn-guest" onclick="login(true)">게스트로 입장하기</button>
+        </div>
     </div>
 
-    <div id="queue-screen" class="screen">
+    <div id="queue-screen" class="screen hidden">
         <div class="circle-container">
-            <h2 style="font-size: 2rem; margin-bottom: 5px;">웨딩을 찾았습니다!</h2>
-            <p style="color: #a09b8c; font-size: 1.1rem; margin-top: 0;">제이아트 • 11.15 • 영원한 듀오 • 2인큐</p>
+            <h2 style="font-size: 2rem; margin-bottom: 5px;">웨딩</h2>
+            <p style="color: #a09b8c; font-size: 0.9rem; margin-top: 0; text-align: center;">제이아트. 11.15.<br>영원한 듀오. 2인큐</p>
             <button id="accept-btn" onclick="acceptGame()">수락!</button>
         </div>
     </div>
 
     <div id="lobby-screen" class="screen">
         <div class="side-nav">
-            <div class="start-btn">예식장 확인하기</div>
-            <div class="nav-item" onclick="alert('2026년 11월 15일')">날짜 확인</div>
+            <div style="background: #1e2328; border: 1px solid var(--lol-gold); color: var(--lol-gold); padding: 1vh; margin: 1vh; text-align: center; font-weight: bold; font-size: 0.8rem;">예식장 확인</div>
+            <div class="nav-item">날짜 확인</div>
             <div class="nav-item">신랑측 계좌</div>
             <div class="nav-item">신부측 계좌</div>
             <div class="nav-item">방명록 작성</div>
@@ -178,50 +147,65 @@
         <div class="main-content">
             <div class="wedding-title">신랑 OO & 신부 OO</div>
             <div class="wedding-desc">
-                그들은 서로가 죽음으로 모든 게 끝날 줄 알았습니다. <br>
-                하지만, 그것은 오산이었습니다. <br>
+                그들은 서로가 죽음으로 모든 게 끝날 줄 알았습니다.<br>
+                하지만, 그것은 오산이었습니다.<br>
                 새로운 랭크 게임(결혼)이 시작됩니다.
             </div>
-            <button style="margin-top: 40px; width: 150px; background: var(--lol-gold); border: none; padding: 10px; cursor: pointer; font-weight: bold;">갤러리 보기</button>
+            <button style="margin-top: 20px; width: 120px; background: var(--lol-gold); border: none; padding: 10px; cursor: pointer; font-weight: bold; font-size: 0.9rem;">갤러리 보기</button>
         </div>
 
         <div class="friend-list">
-            <div style="font-weight: bold; border-bottom: 1px solid #333; padding-bottom: 10px; margin-bottom: 15px;">소셜 (가족)</div>
-            <div class="friend-item">
-                <div style="width: 35px; height: 35px; background: #555; border-radius: 50%; margin-right: 10px;"></div>
+            <div style="display: flex; align-items: center; border-bottom: 1px solid var(--lol-gold); padding-bottom: 10px; margin-bottom: 15px;">
+                <div style="width: 35px; height: 35px; background: var(--lol-blue); border-radius: 50%; margin-right: 10px;"></div>
                 <div>
-                    <div>신랑 부친 OOO</div>
-                    <div class="status-online">● 온라인</div>
+                    <div id="display-nickname" style="font-weight: bold; color: var(--lol-gold); font-size: 1rem;">소환사</div>
+                    <div style="color: #2ecc71; font-size: 0.7rem;">● 접속 중</div>
                 </div>
             </div>
+
+            <div style="font-weight: bold; border-bottom: 1px solid #333; padding-bottom: 5px; margin-bottom: 10px; font-size: 0.8rem;">소셜 (가족)</div>
             <div class="friend-item">
-                <div style="width: 35px; height: 35px; background: #555; border-radius: 50%; margin-right: 10px;"></div>
-                <div>
-                    <div>신부 부친 OOO</div>
-                    <div class="status-online">● 온라인</div>
-                </div>
+                <div style="width: 30px; height: 30px; background: #555; border-radius: 50%; margin-right: 10px;"></div>
+                <div><div>신랑 부친 OOO</div><div class="status-online">● 온라인</div></div>
+            </div>
+            <div class="friend-item">
+                <div style="width: 30px; height: 30px; background: #555; border-radius: 50%; margin-right: 10px;"></div>
+                <div><div>신부 부친 OOO</div><div class="status-online">● 온라인</div></div>
             </div>
         </div>
     </div>
 
     <script>
-        // 1. 클라이언트 실행 버튼 클릭 시 (입장 화면 숨김 & 큐 사운드 재생)
-        function enterInvitation() {
-            document.getElementById('enter-screen').classList.add('hidden'); 
+        // 로그인 처리 함수 (닉네임 저장 및 큐 화면으로 전환)
+        function login(isGuest) {
+            let nickname = "게스트";
             
+            if (!isGuest) {
+                const inputVal = document.getElementById('nickname-input').value.trim();
+                if (inputVal === "") {
+                    alert("닉네임을 입력해주세요.");
+                    return;
+                }
+                nickname = inputVal;
+            }
+
+            // 로비 화면 우측 상단에 닉네임 반영
+            document.getElementById('display-nickname').innerText = nickname;
+
+            // 로그인 화면 숨기고 큐 수락 화면 표시
+            document.getElementById('login-screen').classList.add('hidden');
+            document.getElementById('queue-screen').classList.remove('hidden');
+
+            // 큐 잡히는 소리 재생 (사용자 클릭 직후이므로 정상 재생됨)
             const sound = document.getElementById('accept-sound');
-            sound.play().catch(error => {
-                console.log("효과음 재생 차단됨");
-            });
+            sound.play().catch(e => console.log("효과음 재생 차단됨", e));
         }
 
-        // 2. 수락 버튼 클릭 시 (로비 화면 표시 & 로비 BGM 재생)
+        // 수락 버튼 클릭 시 로비로 전환
         function acceptGame() {
             const bgm = document.getElementById('lobby-bgm');
             bgm.volume = 0.3; 
-            bgm.play().catch(error => {
-                console.log("BGM 재생 차단됨");
-            });
+            bgm.play().catch(e => console.log("BGM 재생 차단됨", e));
 
             document.getElementById('queue-screen').classList.add('hidden');
             
@@ -232,4 +216,3 @@
     </script>
 </body>
 </html>
-
