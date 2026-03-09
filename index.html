@@ -34,6 +34,31 @@
             transition: opacity 0.8s ease; display: flex;
         }
 
+        /* --- 입장 커버 화면 (사운드 자동재생 정책 우회용) --- */
+        #enter-screen {
+            background-color: var(--lol-dark);
+            z-index: 4;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+        }
+        
+        #enter-btn {
+            padding: 15px 40px; 
+            background: transparent; 
+            border: 2px solid var(--lol-blue); 
+            color: var(--lol-blue); 
+            font-size: 1.2rem; 
+            font-weight: bold; 
+            cursor: pointer; 
+            transition: 0.3s;
+        }
+
+        #enter-btn:hover {
+            background: rgba(11, 198, 227, 0.2);
+            box-shadow: 0 0 15px var(--lol-blue);
+        }
+
         /* --- 0단계: 큐 수락 화면 --- */
         #queue-screen {
             background-color: rgba(0, 0, 0, 0.9);
@@ -128,10 +153,15 @@
     <audio id="accept-sound" src="queue-pop.mp3" preload="auto"></audio>
     <audio id="lobby-bgm" src="lobby-bgm.mp3" loop preload="auto"></audio>
 
+    <div id="enter-screen" class="screen">
+        <h1 style="color: var(--lol-gold); margin-bottom: 30px; font-size: 1.8rem; text-align: center;">새로운 랭크 게임이 준비되었습니다.</h1>
+        <button id="enter-btn" onclick="enterInvitation()">클라이언트 실행 (입장)</button>
+    </div>
+
     <div id="queue-screen" class="screen">
         <div class="circle-container">
-            <h2 style="font-size: 2rem; margin-bottom: 10px;">게임을 찾았습니다!</h2>
-            <p style="color: #a09b8c; font-size: 1rem; margin-top: 0;">소환사의 협곡 • 영원한 듀오 • 2인큐</p>
+            <h2 style="font-size: 2.5rem; margin-bottom: 5px;">웨딩을 찾았습니다!</h2>
+            <p style="color: #a09b8c; font-size: 1.1rem; margin-top: 0;">제이아트 • 11.15 • 영원한 듀오 • 2인큐</p>
             <button id="accept-btn" onclick="acceptGame()">수락!</button>
         </div>
     </div>
@@ -139,7 +169,7 @@
     <div id="lobby-screen" class="screen">
         <div class="side-nav">
             <div class="start-btn">예식장 확인하기</div>
-            <div class="nav-item" onclick="alert('202X년 X월 X일')">날짜 확인</div>
+            <div class="nav-item" onclick="alert('2026년 11월 15일')">날짜 확인</div>
             <div class="nav-item">신랑측 계좌</div>
             <div class="nav-item">신부측 계좌</div>
             <div class="nav-item">방명록 작성</div>
@@ -175,28 +205,29 @@
     </div>
 
     <script>
-        // 수락 버튼 클릭 시 실행되는 함수
-        function acceptGame() {
-            // 1. 큐 수락 효과음 재생
+        // 1. 클라이언트 실행 버튼 클릭 시 (입장 화면 숨김 & 큐 사운드 재생)
+        function enterInvitation() {
+            document.getElementById('enter-screen').classList.add('hidden'); 
+            
             const sound = document.getElementById('accept-sound');
             sound.play().catch(error => {
-                console.log("효과음 재생 차단됨: 브라우저 정책");
+                console.log("효과음 재생 차단됨");
             });
+        }
 
-            // 2. 로비 BGM 재생 및 음량 조절
+        // 2. 수락 버튼 클릭 시 (로비 화면 표시 & 로비 BGM 재생)
+        function acceptGame() {
             const bgm = document.getElementById('lobby-bgm');
-            bgm.volume = 0.3; // 음량 30% 설정 (필요시 0.0 ~ 1.0 사이로 조절)
+            bgm.volume = 0.3; 
             bgm.play().catch(error => {
-                console.log("BGM 재생 차단됨: 브라우저 정책");
+                console.log("BGM 재생 차단됨");
             });
 
-            // 3. 큐 수락 화면 숨기기 (페이드 아웃 효과 적용됨)
             document.getElementById('queue-screen').classList.add('hidden');
             
-            // 4. 로비 화면 나타내기
             const lobbyScreen = document.getElementById('lobby-screen');
             lobbyScreen.style.opacity = '1';
-            lobbyScreen.style.pointerEvents = 'auto'; // 화면 나타난 후 클릭 활성화
+            lobbyScreen.style.pointerEvents = 'auto'; 
         }
     </script>
 </body>
