@@ -126,6 +126,7 @@
     <div id="rotate-overlay"> 화면을 가로로 돌려주세요 🔄 </div>
 
     <audio id="accept-sound" src="queue-pop.mp3" preload="auto"></audio>
+    <audio id="lobby-bgm" src="lobby-bgm.mp3" loop preload="auto"></audio>
 
     <div id="queue-screen" class="screen">
         <div class="circle-container">
@@ -174,21 +175,28 @@
     </div>
 
     <script>
-        // 수락 버튼 클릭 시 실행되는 함수 (로그인 화면 없이 바로 로비로 이동)
+        // 수락 버튼 클릭 시 실행되는 함수
         function acceptGame() {
-            // 효과음 재생
+            // 1. 큐 수락 효과음 재생
             const sound = document.getElementById('accept-sound');
             sound.play().catch(error => {
-                console.log("브라우저 정책으로 인해 소리 자동 재생이 차단되었을 수 있습니다.");
+                console.log("효과음 재생 차단됨: 브라우저 정책");
             });
 
-            // 큐 수락 화면 숨기기
+            // 2. 로비 BGM 재생 및 음량 조절
+            const bgm = document.getElementById('lobby-bgm');
+            bgm.volume = 0.3; // 음량 30% 설정 (필요시 0.0 ~ 1.0 사이로 조절)
+            bgm.play().catch(error => {
+                console.log("BGM 재생 차단됨: 브라우저 정책");
+            });
+
+            // 3. 큐 수락 화면 숨기기 (페이드 아웃 효과 적용됨)
             document.getElementById('queue-screen').classList.add('hidden');
             
-            // 로비 화면 나타내기
+            // 4. 로비 화면 나타내기
             const lobbyScreen = document.getElementById('lobby-screen');
             lobbyScreen.style.opacity = '1';
-            lobbyScreen.style.pointerEvents = 'auto';
+            lobbyScreen.style.pointerEvents = 'auto'; // 화면 나타난 후 클릭 활성화
         }
     </script>
 </body>
