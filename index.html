@@ -34,9 +34,50 @@
             transition: opacity 0.8s ease; display: flex;
         }
 
+        /* --- 0단계: 큐 수락 화면 (새로 추가됨) --- */
+        #queue-screen {
+            background-color: rgba(0, 0, 0, 0.9);
+            z-index: 3; /* 로그인 화면보다 위에 오도록 설정 */
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+        }
+        
+        .circle-container {
+            position: relative;
+            width: 350px; height: 350px;
+            border-radius: 50%;
+            background: radial-gradient(circle, #0a1428 0%, #000000 100%);
+            display: flex; flex-direction: column;
+            justify-content: center; align-items: center;
+            border: 2px solid #005a82;
+            box-shadow: 0 0 20px #0ac8b9;
+            animation: pulse 2s infinite; /* 큐 잡혔을 때 깜빡이는 효과 */
+        }
+
+        @keyframes pulse {
+            0% { box-shadow: 0 0 10px #0ac8b9; }
+            50% { box-shadow: 0 0 40px #0bc6e3; }
+            100% { box-shadow: 0 0 10px #0ac8b9; }
+        }
+
+        #accept-btn {
+            margin-top: 30px; padding: 12px 50px;
+            background-color: transparent;
+            color: var(--lol-gold);
+            border: 2px solid var(--lol-gold);
+            font-size: 1.2rem; font-weight: bold;
+            cursor: pointer; transition: 0.3s;
+        }
+
+        #accept-btn:hover {
+            background: rgba(200, 170, 110, 0.2);
+            box-shadow: 0 0 15px var(--lol-gold);
+        }
+
         /* --- 1단계: 로그인 화면 --- */
         #login-screen {
-            background: url('https://imgur.com/your-login-bg.jpg') center/cover; /* 로그인 배경이미지 */
+            background: url('https://imgur.com/your-login-bg.jpg') center/cover;
             z-index: 2;
         }
         .login-box {
@@ -46,7 +87,7 @@
         }
         .login-input {
             width: 100%; padding: 15px; margin: 10px 0;
-            border: 1px solid #ccc; background: #f0f0f0;
+            border: 1px solid #ccc; background: #f0f0f0; box-sizing: border-box;
         }
         .login-btn {
             margin-top: 20px; padding: 15px;
@@ -57,7 +98,7 @@
         /* --- 2단계: 메인 로비 화면 --- */
         #lobby-screen {
             background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('https://imgur.com/your-lobby-bg.jpg') center/cover;
-            opacity: 0; z-index: 1;
+            opacity: 0; z-index: 1; pointer-events: none; /* 숨겨져 있을 때 클릭 방지 */
         }
 
         /* 왼쪽 메뉴바 */
@@ -104,6 +145,16 @@
 
     <div id="rotate-overlay"> 화면을 가로로 돌려주세요 🔄 </div>
 
+    <audio id="accept-sound" src="https://www.soundjay.com/buttons/sounds/button-09.mp3" preload="auto"></audio>
+
+    <div id="queue-screen" class="screen">
+        <div class="circle-container">
+            <h2 style="font-size: 2rem; margin-bottom: 10px;">게임을 찾았습니다!</h2>
+            <p style="color: #a09b8c; font-size: 1rem; margin-top: 0;">소환사의 협곡 • 영원한 듀오 • 2인큐</p>
+            <button id="accept-btn" onclick="acceptGame()">수락!</button>
+        </div>
+    </div>
+
     <div id="login-screen" class="screen">
         <div class="login-box">
             <h1 style="font-size: 2rem;">로그인</h1>
@@ -130,7 +181,7 @@
                 하지만, 그것은 오산이었습니다. <br>
                 새로운 랭크 게임(결혼)이 시작됩니다.
             </div>
-            <button style="margin-top: 40px; width: 150px; background: var(--lol-gold); border: none; padding: 10px; cursor: pointer;">갤러리 보기</button>
+            <button style="margin-top: 40px; width: 150px; background: var(--lol-gold); border: none; padding: 10px; cursor: pointer; font-weight: bold;">갤러리 보기</button>
         </div>
 
         <div class="friend-list">
@@ -153,9 +204,25 @@
     </div>
 
     <script>
+        // 1. 큐 수락 버튼 클릭 시 실행되는 함수
+        function acceptGame() {
+            // 효과음 재생
+            const sound = document.getElementById('accept-sound');
+            sound.play().catch(error => {
+                console.log("브라우저 정책으로 인해 소리 자동 재생이 차단되었을 수 있습니다.");
+            });
+
+            // 큐 수락 화면 숨기기 (페이드 아웃)
+            document.getElementById('queue-screen').classList.add('hidden');
+        }
+
+        // 2. 로그인 버튼 클릭 시 실행되는 함수
         function goToLobby() {
             document.getElementById('login-screen').classList.add('hidden');
-            document.getElementById('lobby-screen').style.opacity = '1';
+            
+            const lobbyScreen = document.getElementById('lobby-screen');
+            lobbyScreen.style.opacity = '1';
+            lobbyScreen.style.pointerEvents = 'auto'; // 화면이 나타난 후 클릭 가능하도록 설정
         }
     </script>
 </body>
