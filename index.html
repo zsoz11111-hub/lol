@@ -40,10 +40,9 @@
             color: #111; box-sizing: border-box; padding: 0 20px;
         }
         
-        /* 💡 수정됨: 이미지를 못 불러와도 눈부시지 않게 기본 검은색(#000) 배경 추가 */
         .login-right { 
             flex: 1; 
-            background: #000 url('login-bg.jpg') center/cover no-repeat; 
+            background: #000 url('login-bg.jpg?v=1') center/cover no-repeat; 
         }
         
         .riot-logo { color: var(--riot-red); font-weight: 900; font-size: 1.5rem; margin-bottom: 3vh; letter-spacing: -1px; display: flex; align-items: center; gap: 5px; }
@@ -81,9 +80,9 @@
         #pick-screen { background-color: var(--lol-bg-dark); z-index: 2; flex-direction: column; position: relative; opacity: 0; pointer-events: none; }
         .pick-header { text-align: center; padding: 2vh; font-size: 1.8rem; font-weight: bold; color: #f0e6d2; border-bottom: 1px solid rgba(200, 170, 110, 0.3); letter-spacing: 2px; flex-shrink: 0; }
         
-        .pick-container { display: flex; flex: 1; width: 100%; overflow: hidden; justify-content: space-between; }
+        .pick-container { display: flex; flex: 1; width: 100%; overflow: hidden; justify-content: space-between; position: relative; }
         
-        /* 1. 좌측 패널 (아군 팀원 리스트 / 채팅창) */
+        /* 1. 좌측 패널 (아군 리스트 / 하단 채팅창) */
         .pick-left-panel {
             width: 25%; min-width: 180px; border-right: 1px solid rgba(200, 170, 110, 0.3);
             display: flex; flex-direction: column; background: rgba(0,0,0,0.4); box-sizing: border-box;
@@ -105,18 +104,22 @@
             display: flex; flex-direction: column; justify-content: flex-end;
         }
 
-        /* 2. 중앙 패널 (메뉴 카드 + 게임 시작 버튼) */
-        .pick-center-panel { flex: 1; display: flex; flex-direction: column; position: relative; }
-        .pick-content { flex: 1; display: flex; justify-content: center; align-items: center; gap: 2vw; padding-bottom: 5vh; }
+        /* 2. 중앙 패널 (메뉴 카드 / 하단 중앙 시작 버튼) */
+        .pick-center-panel { flex: 1; display: flex; flex-direction: column; justify-content: space-between; align-items: center; position: relative; }
+        .pick-content { flex: 1; display: flex; justify-content: center; align-items: center; gap: 2vw; width: 100%; padding: 0 2vw; }
         .champ-card { width: 18vw; height: 40vh; min-width: 120px; max-width: 180px; max-height: 280px; background: linear-gradient(to bottom, #1e2328, #010a13); border: 2px solid #5c5b57; border-radius: 5px; display: flex; flex-direction: column; justify-content: flex-end; align-items: center; transition: 0.3s; cursor: pointer; position: relative; overflow: hidden; background-size: cover; background-position: center; }
         .champ-card:hover { border-color: var(--lol-gold); box-shadow: 0 0 15px rgba(200,170,110,0.6); transform: translateY(-5px); }
         .champ-name { width: 100%; text-align: center; font-size: 0.9rem; font-weight: bold; color: white; background: rgba(0,0,0,0.7); padding: 10px 0; border-top: 1px solid var(--lol-gold); }
         
-        .start-game-btn-container { position: absolute; bottom: 3vh; right: 3vw; }
-        #start-game-btn { padding: 1.5vh 4vw; background: transparent; border: 2px solid var(--lol-blue); color: var(--lol-blue); font-size: 1.1rem; font-weight: bold; cursor: pointer; transition: 0.3s; }
-        #start-game-btn:hover { background: rgba(11, 198, 227, 0.2); box-shadow: 0 0 15px var(--lol-blue); }
+        .start-game-btn-container { width: 100%; text-align: center; padding-bottom: 3vh; flex-shrink: 0; }
+        #start-game-btn { 
+            padding: 1.8vh 6vw; background: transparent; border: 2px solid var(--lol-gold); 
+            color: var(--lol-gold); font-size: 1.3rem; font-weight: bold; cursor: pointer; transition: 0.3s; 
+            box-shadow: 0 0 10px var(--lol-gold); letter-spacing: 1px;
+        }
+        #start-game-btn:hover { background: rgba(200, 170, 110, 0.2); box-shadow: 0 0 20px var(--lol-gold); }
 
-        /* 💡 추가됨: 3. 우측 패널 (적팀 리스트) */
+        /* 3. 우측 패널 (적팀 리스트 - 고난의 5인큐) */
         .pick-right-panel {
             width: 25%; min-width: 180px; border-left: 1px solid rgba(200, 170, 110, 0.3);
             display: flex; flex-direction: column; background: rgba(0,0,0,0.4); box-sizing: border-box;
@@ -126,19 +129,36 @@
             display: flex; align-items: center; justify-content: flex-end; gap: 12px; padding: 10px; width: 90%;
             background: rgba(40, 20, 20, 0.6); border: 1px solid #3c2020; border-radius: 5px;
         }
-        .enemy-img { width: 3rem; height: 3rem; border-radius: 50%; border: 2px solid #ff4e50; background-color: #111; }
+        .enemy-img { width: 3rem; height: 3rem; border-radius: 50%; border: 2px solid #ff4e50; background-color: #111; background-size: cover; background-position: center; }
         .enemy-info { text-align: right; display: flex; flex-direction: column; }
         .enemy-status { font-size: 0.75rem; color: #ff4e50; margin-bottom: 3px; font-weight: bold; }
-        .enemy-name { font-size: 0.85rem; font-weight: bold; color: #a09b8c; }
+        .enemy-name { font-size: 0.85rem; font-weight: bold; color: #f0e6d2; }
 
         /* --- 4단계: 게임 화면 --- */
         #game-screen { background: url('ingame-bg.jpg') center/cover; opacity: 0; z-index: 1; pointer-events: none; flex-direction: column; justify-content: space-between; }
         .ingame-announcement { text-align: center; margin-top: 5vh; animation: dropDown 1s ease-out; }
         .ingame-announcement h2 { font-size: 3.5rem; margin: 0; background: linear-gradient(to bottom, #f0e6d2, #c8aa6e); -webkit-background-clip: text; -webkit-text-fill-color: transparent; filter: drop-shadow(0 0 10px #0bc6e3); font-weight: 900; }
+        
+        .pentakill-face-container {
+            width: 10vw; height: 10vw; border-radius: 50%; border: 3px solid var(--lol-gold);
+            margin: 10px auto; background: #333; background-size: cover; background-position: center;
+            background-image: url('couple-face.jpg');
+        }
+        
         @keyframes dropDown { from { transform: translateY(-50px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
         .ingame-chat { position: absolute; bottom: 3vh; left: 2vw; width: 35vw; max-width: 300px; background: rgba(0,0,0,0.6); padding: 10px; font-size: 0.85rem; text-shadow: 1px 1px 1px black; border-left: 2px solid var(--lol-blue); line-height: 1.5; }
+        
         .hud-container { display: flex; justify-content: center; align-items: flex-end; width: 100%; padding-bottom: 2vh; }
-        .skill-bar { display: flex; gap: 2vw; background: rgba(1, 10, 19, 0.9); padding: 10px 20px; border: 2px solid #5c5b57; border-radius: 10px; border-top: 3px solid var(--lol-gold); box-shadow: 0 0 20px rgba(0,0,0,0.9); }
+        .skill-bar { display: flex; gap: 2vw; background: rgba(1, 10, 19, 0.9); padding: 10px 20px; border: 2px solid #5c5b57; border-radius: 10px; border-top: 3px solid var(--lol-gold); box-shadow: 0 0 20px rgba(0,0,0,0.9); position: relative; }
+        
+        .level-tag {
+            position: absolute; bottom: -5px; background: #010a13; border: 1px solid var(--lol-gold);
+            border-radius: 50%; width: 2.2rem; height: 2.2rem; display: flex; justify-content: center;
+            align-items: center; color: var(--lol-gold); font-weight: bold; font-size: 1rem; text-shadow: 0 0 5px var(--lol-gold);
+        }
+        .level-11 { left: -15px; }
+        .level-15 { right: -15px; }
+
         .skill-btn { display: flex; flex-direction: column; align-items: center; cursor: pointer; transition: 0.2s; }
         .skill-icon { width: 10vw; height: 10vw; min-width: 50px; min-height: 50px; max-width: 80px; max-height: 80px; background-color: #222; border: 2px solid #5c5b57; border-radius: 5px; background-size: cover; background-position: center; display: flex; justify-content: center; align-items: center; font-size: 1.5rem; }
         .skill-btn:hover .skill-icon { border-color: var(--lol-gold); box-shadow: 0 0 15px var(--lol-gold); transform: translateY(-5px); }
@@ -209,45 +229,45 @@
                     <div class="champ-card" onclick="alert('계좌 창이 열립니다.')" style="background-image: url('card3.jpg');"><div class="champ-name">계좌번호 보기</div></div>
                 </div>
 
-                <div class="start-game-btn-container"><button id="start-game-btn" onclick="startGame()">결혼(게임) 시작</button></div>
+                <div class="start-game-btn-container"><button id="start-game-btn" onclick="startGame()">준비 완료!</button></div>
             </div>
 
             <div class="pick-right-panel">
                 <div class="pick-enemy-list">
                     <div class="enemy-player">
                         <div class="enemy-info">
-                            <span class="enemy-status">선택 중...</span>
-                            <span class="enemy-name">1번 적</span>
+                            <span class="enemy-status">확정됨</span>
+                            <span class="enemy-name">세금 폭탄</span>
                         </div>
-                        <div class="enemy-img"></div>
+                        <div class="enemy-img" style="background-image: url('enemy-1.jpg');">💰</div>
                     </div>
                     <div class="enemy-player">
                         <div class="enemy-info">
-                            <span class="enemy-status">선택 중...</span>
-                            <span class="enemy-name">2번 적</span>
+                            <span class="enemy-status">확정됨</span>
+                            <span class="enemy-name">잔소리 명절</span>
                         </div>
-                        <div class="enemy-img"></div>
+                        <div class="enemy-img" style="background-image: url('enemy-2.jpg');">🍳</div>
                     </div>
                     <div class="enemy-player">
                         <div class="enemy-info">
-                            <span class="enemy-status">선택 중...</span>
-                            <span class="enemy-name">3번 적</span>
+                            <span class="enemy-status">확정됨</span>
+                            <span class="enemy-name">끝없는 업무</span>
                         </div>
-                        <div class="enemy-img"></div>
+                        <div class="enemy-img" style="background-image: url('enemy-3.jpg');">💻</div>
                     </div>
                     <div class="enemy-player">
                         <div class="enemy-info">
-                            <span class="enemy-status">선택 중...</span>
-                            <span class="enemy-name">4번 적</span>
+                            <span class="enemy-status">확정됨</span>
+                            <span class="enemy-name">피곤한 인간관계</span>
                         </div>
-                        <div class="enemy-img"></div>
+                        <div class="enemy-img" style="background-image: url('enemy-4.jpg');">👤</div>
                     </div>
                     <div class="enemy-player">
                         <div class="enemy-info">
-                            <span class="enemy-status">선택 중...</span>
-                            <span class="enemy-name">5번 적</span>
+                            <span class="enemy-status">확정됨</span>
+                            <span class="enemy-name">미래 걱정</span>
                         </div>
-                        <div class="enemy-img"></div>
+                        <div class="enemy-img" style="background-image: url('enemy-5.jpg');">☁️</div>
                     </div>
                 </div>
             </div>
@@ -255,7 +275,10 @@
     </div>
 
     <div id="game-screen" class="screen">
-        <div class="ingame-announcement"><h2>결혼 펜타 킬!</h2></div>
+        <div class="ingame-announcement">
+            <h2>결혼 펜타 킬!</h2>
+            <div class="pentakill-face-container"></div>
+        </div>
         <div class="ingame-chat">
             <div style="color: #0bc6e3;">[전체] <span id="ingame-nickname" style="font-weight:bold;">소환사</span>: 웨딩홀에 접속했습니다!</div>
             <div style="color: #ff4e50;">[시스템] 새로운 랭크 게임(결혼)이 시작되었습니다.</div>
@@ -263,6 +286,9 @@
         </div>
         <div class="hud-container">
             <div class="skill-bar">
+                <div class="level-tag level-11">11</div>
+                <div class="level-tag level-15">15</div>
+
                 <div class="skill-btn" onclick="alert('갤러리 창이 열립니다.')"><div class="skill-icon" style="background-image: url('icon-q.jpg');">📸</div><div class="skill-key">Q</div><div class="skill-name">갤러리 보기</div></div>
                 <div class="skill-btn" onclick="alert('지도 창이 열립니다.')"><div class="skill-icon" style="background-image: url('icon-w.jpg');">🗺️</div><div class="skill-key">W</div><div class="skill-name">식장 위치</div></div>
                 <div class="skill-btn" onclick="alert('계좌 창이 열립니다.')"><div class="skill-icon" style="background-image: url('icon-e.jpg');">💳</div><div class="skill-key">E</div><div class="skill-name">계좌 번호</div></div>
