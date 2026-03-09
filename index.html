@@ -39,13 +39,11 @@
             display: flex; flex-direction: column; align-items: center; justify-content: center;
             color: #111; box-sizing: border-box; padding: 0 20px;
         }
-        /* 이미지 갱신 강제 적용 (마법의 주문 ?v=1 추가) */
+        
+        /* 💡 수정됨: 이미지를 못 불러와도 눈부시지 않게 기본 검은색(#000) 배경 추가 */
         .login-right { 
             flex: 1; 
-            background-image: url('./login-bg.jpg?v=1'); 
-            background-size: cover; 
-            background-position: center; 
-            background-repeat: no-repeat;
+            background: #000 url('login-bg.jpg') center/cover no-repeat; 
         }
         
         .riot-logo { color: var(--riot-red); font-weight: 900; font-size: 1.5rem; margin-bottom: 3vh; letter-spacing: -1px; display: flex; align-items: center; gap: 5px; }
@@ -83,17 +81,14 @@
         #pick-screen { background-color: var(--lol-bg-dark); z-index: 2; flex-direction: column; position: relative; opacity: 0; pointer-events: none; }
         .pick-header { text-align: center; padding: 2vh; font-size: 1.8rem; font-weight: bold; color: #f0e6d2; border-bottom: 1px solid rgba(200, 170, 110, 0.3); letter-spacing: 2px; flex-shrink: 0; }
         
-        .pick-container { display: flex; flex: 1; width: 100%; overflow: hidden; }
+        .pick-container { display: flex; flex: 1; width: 100%; overflow: hidden; justify-content: space-between; }
         
-        /* 💡 픽창 레이아웃 분리 (좌측 패널 / 중앙 패널) */
-        /* 1. 좌측 패널 (위: 팀원 리스트 / 아래: 채팅창) */
+        /* 1. 좌측 패널 (아군 팀원 리스트 / 채팅창) */
         .pick-left-panel {
-            width: 28%; min-width: 220px; border-right: 1px solid rgba(200, 170, 110, 0.3);
+            width: 25%; min-width: 180px; border-right: 1px solid rgba(200, 170, 110, 0.3);
             display: flex; flex-direction: column; background: rgba(0,0,0,0.4); box-sizing: border-box;
         }
-        .pick-team-list {
-            flex: 1; display: flex; flex-direction: column; padding: 3vh 1vw; gap: 2vh; overflow-y: auto;
-        }
+        .pick-team-list { flex: 1; display: flex; flex-direction: column; padding: 3vh 1vw; gap: 2vh; overflow-y: auto; }
         .pick-player {
             display: flex; align-items: center; gap: 12px; padding: 10px;
             background: rgba(30, 35, 40, 0.8); border: 1px solid var(--lol-border); border-radius: 5px;
@@ -103,7 +98,6 @@
         .pick-player-status { font-size: 0.75rem; color: #0bc6e3; margin-bottom: 3px; font-weight: bold; }
         .pick-player-name { font-size: 0.95rem; font-weight: bold; color: white; }
 
-        /* 채팅창을 좌측 패널 맨 아래에 고정 */
         .chat-box-pick { 
             height: 25%; min-height: 100px; background: rgba(0, 0, 0, 0.8); 
             border-top: 1px solid var(--lol-border); border-left: 2px solid var(--lol-gold); 
@@ -111,18 +105,31 @@
             display: flex; flex-direction: column; justify-content: flex-end;
         }
 
-        /* 2. 우측(중앙) 패널 (챔피언 카드 + 게임 시작 버튼) */
-        .pick-center-panel {
-            flex: 1; display: flex; flex-direction: column; position: relative;
-        }
-        .pick-content { flex: 1; display: flex; justify-content: center; align-items: center; gap: 3vw; padding-bottom: 5vh; }
-        .champ-card { width: 22vw; height: 45vh; max-width: 160px; max-height: 280px; background: linear-gradient(to bottom, #1e2328, #010a13); border: 2px solid #5c5b57; border-radius: 5px; display: flex; flex-direction: column; justify-content: flex-end; align-items: center; transition: 0.3s; cursor: pointer; position: relative; overflow: hidden; background-size: cover; background-position: center; }
+        /* 2. 중앙 패널 (메뉴 카드 + 게임 시작 버튼) */
+        .pick-center-panel { flex: 1; display: flex; flex-direction: column; position: relative; }
+        .pick-content { flex: 1; display: flex; justify-content: center; align-items: center; gap: 2vw; padding-bottom: 5vh; }
+        .champ-card { width: 18vw; height: 40vh; min-width: 120px; max-width: 180px; max-height: 280px; background: linear-gradient(to bottom, #1e2328, #010a13); border: 2px solid #5c5b57; border-radius: 5px; display: flex; flex-direction: column; justify-content: flex-end; align-items: center; transition: 0.3s; cursor: pointer; position: relative; overflow: hidden; background-size: cover; background-position: center; }
         .champ-card:hover { border-color: var(--lol-gold); box-shadow: 0 0 15px rgba(200,170,110,0.6); transform: translateY(-5px); }
-        .champ-name { width: 100%; text-align: center; font-size: 1rem; font-weight: bold; color: white; background: rgba(0,0,0,0.7); padding: 10px 0; border-top: 1px solid var(--lol-gold); }
+        .champ-name { width: 100%; text-align: center; font-size: 0.9rem; font-weight: bold; color: white; background: rgba(0,0,0,0.7); padding: 10px 0; border-top: 1px solid var(--lol-gold); }
         
         .start-game-btn-container { position: absolute; bottom: 3vh; right: 3vw; }
         #start-game-btn { padding: 1.5vh 4vw; background: transparent; border: 2px solid var(--lol-blue); color: var(--lol-blue); font-size: 1.1rem; font-weight: bold; cursor: pointer; transition: 0.3s; }
         #start-game-btn:hover { background: rgba(11, 198, 227, 0.2); box-shadow: 0 0 15px var(--lol-blue); }
+
+        /* 💡 추가됨: 3. 우측 패널 (적팀 리스트) */
+        .pick-right-panel {
+            width: 25%; min-width: 180px; border-left: 1px solid rgba(200, 170, 110, 0.3);
+            display: flex; flex-direction: column; background: rgba(0,0,0,0.4); box-sizing: border-box;
+        }
+        .pick-enemy-list { flex: 1; display: flex; flex-direction: column; padding: 3vh 1vw; gap: 1.5vh; overflow-y: auto; align-items: flex-end; }
+        .enemy-player {
+            display: flex; align-items: center; justify-content: flex-end; gap: 12px; padding: 10px; width: 90%;
+            background: rgba(40, 20, 20, 0.6); border: 1px solid #3c2020; border-radius: 5px;
+        }
+        .enemy-img { width: 3rem; height: 3rem; border-radius: 50%; border: 2px solid #ff4e50; background-color: #111; }
+        .enemy-info { text-align: right; display: flex; flex-direction: column; }
+        .enemy-status { font-size: 0.75rem; color: #ff4e50; margin-bottom: 3px; font-weight: bold; }
+        .enemy-name { font-size: 0.85rem; font-weight: bold; color: #a09b8c; }
 
         /* --- 4단계: 게임 화면 --- */
         #game-screen { background: url('ingame-bg.jpg') center/cover; opacity: 0; z-index: 1; pointer-events: none; flex-direction: column; justify-content: space-between; }
@@ -172,7 +179,6 @@
         
         <div class="pick-container">
             <div class="pick-left-panel">
-                
                 <div class="pick-team-list">
                     <div class="pick-player">
                         <div class="pick-player-img" style="background-image: url('groom-face.jpg');"></div>
@@ -194,7 +200,6 @@
                     <div id="pick-chat-messages" style="margin-bottom: 8px; font-weight: bold;"></div>
                     <div style="border-top: 1px solid #3c3c41; padding-top: 5px; color: #555;"><span style="color:#0bc6e3;">💬</span> 클릭하거나 Enter 키를 눌러 보기</div>
                 </div>
-
             </div>
 
             <div class="pick-center-panel">
@@ -205,6 +210,46 @@
                 </div>
 
                 <div class="start-game-btn-container"><button id="start-game-btn" onclick="startGame()">결혼(게임) 시작</button></div>
+            </div>
+
+            <div class="pick-right-panel">
+                <div class="pick-enemy-list">
+                    <div class="enemy-player">
+                        <div class="enemy-info">
+                            <span class="enemy-status">선택 중...</span>
+                            <span class="enemy-name">1번 적</span>
+                        </div>
+                        <div class="enemy-img"></div>
+                    </div>
+                    <div class="enemy-player">
+                        <div class="enemy-info">
+                            <span class="enemy-status">선택 중...</span>
+                            <span class="enemy-name">2번 적</span>
+                        </div>
+                        <div class="enemy-img"></div>
+                    </div>
+                    <div class="enemy-player">
+                        <div class="enemy-info">
+                            <span class="enemy-status">선택 중...</span>
+                            <span class="enemy-name">3번 적</span>
+                        </div>
+                        <div class="enemy-img"></div>
+                    </div>
+                    <div class="enemy-player">
+                        <div class="enemy-info">
+                            <span class="enemy-status">선택 중...</span>
+                            <span class="enemy-name">4번 적</span>
+                        </div>
+                        <div class="enemy-img"></div>
+                    </div>
+                    <div class="enemy-player">
+                        <div class="enemy-info">
+                            <span class="enemy-status">선택 중...</span>
+                            <span class="enemy-name">5번 적</span>
+                        </div>
+                        <div class="enemy-img"></div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
