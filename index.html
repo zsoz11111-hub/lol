@@ -10,6 +10,7 @@
             --lol-blue: #0bc6e3;
             --lol-dark: #010a13;
             --lol-border: #3c3c41;
+            --lol-bg-dark: #0a1428;
         }
 
         body, html {
@@ -34,7 +35,7 @@
             transition: opacity 0.5s ease; display: flex;
         }
 
-        /* --- -1단계: 로그인 화면 (모바일 팝업 형태) --- */
+        /* --- 1단계: 로그인 화면 --- */
         #login-screen {
             background: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), url('https://imgur.com/your-login-bg.jpg') center/cover;
             z-index: 4; justify-content: center; align-items: center;
@@ -61,7 +62,7 @@
         }
         .btn-login:hover, .btn-guest:hover { filter: brightness(1.2); }
 
-        /* --- 0단계: 큐 수락 화면 (모바일 비율 조정) --- */
+        /* --- 2단계: 큐 수락 화면 --- */
         #queue-screen {
             background-color: rgba(0, 0, 0, 0.95); z-index: 3;
             justify-content: center; align-items: center; flex-direction: column;
@@ -82,8 +83,45 @@
             color: var(--lol-gold); border: 2px solid var(--lol-gold);
             font-size: 1.2rem; font-weight: bold; cursor: pointer; transition: 0.3s;
         }
+        #accept-btn:hover { background: rgba(200, 170, 110, 0.2); box-shadow: 0 0 15px var(--lol-gold); }
 
-        /* --- 1단계: 메인 로비 화면 (모바일 꽉 찬 레이아웃) --- */
+        /* --- 3단계: 픽창 (챔피언 선택 화면) --- */
+        #pick-screen {
+            background-color: var(--lol-bg-dark);
+            z-index: 2; flex-direction: column;
+            opacity: 0; pointer-events: none; /* 초기엔 숨김 */
+        }
+        .pick-header {
+            text-align: center; padding: 3vh; font-size: 1.5rem; 
+            color: var(--lol-gold); border-bottom: 2px solid var(--lol-border);
+        }
+        .pick-content {
+            flex: 1; display: flex; justify-content: center; align-items: center; gap: 5vw;
+        }
+        .champ-card {
+            width: 20vw; height: 50vh; max-width: 200px; max-height: 350px;
+            background: #111; border: 2px solid var(--lol-border);
+            display: flex; flex-direction: column; justify-content: center; align-items: center;
+            transition: 0.3s;
+        }
+        .champ-card:hover { border-color: var(--lol-gold); box-shadow: 0 0 20px rgba(200,170,110,0.5); }
+        .champ-img {
+            width: 80%; aspect-ratio: 1/1; background: #333; border-radius: 50%; margin-bottom: 2vh;
+            /* 이곳에 신랑/신부 사진 url을 넣으시면 됩니다 */
+            background-size: cover; background-position: center;
+        }
+        .champ-name { font-size: 1.2rem; font-weight: bold; }
+        .champ-role { font-size: 0.9rem; color: #888; margin-top: 5px; }
+        
+        .start-game-btn-container { text-align: center; padding: 3vh; }
+        #start-game-btn {
+            padding: 1.5vh 5vw; background: var(--lol-blue); border: none;
+            color: white; font-size: 1.2rem; font-weight: bold; cursor: pointer;
+            border-radius: 5px;
+        }
+        #start-game-btn:hover { filter: brightness(1.2); }
+
+        /* --- 4단계: 메인 로비 화면 (청첩장 본문) --- */
         #lobby-screen {
             background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url('https://imgur.com/your-lobby-bg.jpg') center/cover;
             opacity: 0; z-index: 1; pointer-events: none; flex-direction: row;
@@ -127,11 +165,32 @@
         </div>
     </div>
 
-    <div id="queue-screen" class="screen hidden">
+        <div id="queue-screen" class="screen hidden">
         <div class="circle-container">
-            <h2 style="font-size: 2rem; margin-bottom: 5px;">게임을 찾았습니다!</h2>
-            <p style="color: #a09b8c; font-size: 0.9rem; margin-top: 0; text-align: center;">소환사의 협곡 • 영원한 듀오 • 2인큐</p>
-            <button id="accept-btn" onclick="acceptGame()">수락!</button>
+            <h2 style="font-size: 2rem; margin-bottom: 5px;">웨딩을 찾았습니다!</h2>
+            <p style="color: #a09b8c; font-size: 0.9rem; margin-top: 0; text-align: center;">제이아트 • 11.15 • 영원한 듀오 • 2인큐</p>
+            <button id="accept-btn" onclick="goToPick()">수락!</button>
+        </div>
+    </div>
+
+    <div id="pick-screen" class="screen">
+        <div class="pick-header">
+            평생을 함께할 챔피언을 선택하세요
+        </div>
+        <div class="pick-content">
+            <div class="champ-card">
+                <div class="champ-img" style="background-image: url('신랑사진URL.jpg');"></div>
+                <div class="champ-name">신랑 000</div>
+                <div class="champ-role">탑 (탱커)</div>
+            </div>
+            <div class="champ-card">
+                <div class="champ-img" style="background-image: url('신부사진URL.jpg');"></div>
+                <div class="champ-name">신부 000</div>
+                <div class="champ-role">서포터 (힐러)</div>
+            </div>
+        </div>
+        <div class="start-game-btn-container">
+            <button id="start-game-btn" onclick="startGame()">결혼(게임) 시작</button>
         </div>
     </div>
 
@@ -176,10 +235,9 @@
     </div>
 
     <script>
-        // 로그인 처리 함수 (닉네임 저장 및 큐 화면으로 전환)
+        // 1. 로그인 -> 큐 화면
         function login(isGuest) {
             let nickname = "게스트";
-            
             if (!isGuest) {
                 const inputVal = document.getElementById('nickname-input').value.trim();
                 if (inputVal === "") {
@@ -189,26 +247,39 @@
                 nickname = inputVal;
             }
 
-            // 로비 화면 우측 상단에 닉네임 반영
             document.getElementById('display-nickname').innerText = nickname;
 
-            // 로그인 화면 숨기고 큐 수락 화면 표시
             document.getElementById('login-screen').classList.add('hidden');
             document.getElementById('queue-screen').classList.remove('hidden');
 
-            // 큐 잡히는 소리 재생 (사용자 클릭 직후이므로 정상 재생됨)
             const sound = document.getElementById('accept-sound');
             sound.play().catch(e => console.log("효과음 재생 차단됨", e));
         }
 
-        // 수락 버튼 클릭 시 로비로 전환
-        function acceptGame() {
+        // 2. 큐 수락 -> 픽창 화면
+        function goToPick() {
+            // 큐 화면 숨김
+            document.getElementById('queue-screen').classList.add('hidden');
+            
+            // 픽창 표시
+            const pickScreen = document.getElementById('pick-screen');
+            pickScreen.style.opacity = '1';
+            pickScreen.style.pointerEvents = 'auto';
+        }
+
+        // 3. 픽창 -> 메인 로비 (게임 시작)
+        function startGame() {
+            // BGM 재생
             const bgm = document.getElementById('lobby-bgm');
             bgm.volume = 0.3; 
             bgm.play().catch(e => console.log("BGM 재생 차단됨", e));
 
-            document.getElementById('queue-screen').classList.add('hidden');
+            // 픽창 숨김
+            const pickScreen = document.getElementById('pick-screen');
+            pickScreen.classList.add('hidden');
+            pickScreen.style.opacity = '0'; // 트랜지션용
             
+            // 로비 표시
             const lobbyScreen = document.getElementById('lobby-screen');
             lobbyScreen.style.opacity = '1';
             lobbyScreen.style.pointerEvents = 'auto'; 
@@ -216,4 +287,3 @@
     </script>
 </body>
 </html>
-
