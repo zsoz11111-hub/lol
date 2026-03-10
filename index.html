@@ -14,7 +14,7 @@
             --riot-red: #eb0029; 
         }
 
-        /* 💡 수정됨: 모든 요소의 테두리와 여백을 크기에 포함시켜 잘림 방지 */
+        /* 모든 요소의 테두리와 여백을 크기에 포함시켜 잘림 방지 */
         * { box-sizing: border-box; }
 
         body, html {
@@ -45,7 +45,6 @@
         /* --- 1단계: 심플 모던 라이엇 로그인 화면 --- */
         #login-screen { display: flex; flex-direction: row; background: #fff; z-index: 4; }
         
-        /* 💡 수정됨: 좌우 잘림 방지를 위해 min-width 축소 */
         .login-left {
             width: 35%; min-width: 200px; max-width: 400px; background: #fff; 
             display: flex; flex-direction: column; align-items: center; justify-content: center;
@@ -70,7 +69,6 @@
         /* --- 2단계: 큐 수락 화면 --- */
         #queue-screen { background-color: rgba(0, 0, 0, 0.95); z-index: 3; justify-content: center; align-items: center; flex-direction: column; }
         
-        /* 💡 수정됨: 원 크기를 유동적으로 변경하고, 글자 크기를 롤 클라이언트처럼 세련되게 축소 */
         .circle-container { 
             position: relative; width: 45vmin; height: 45vmin; min-width: 220px; min-height: 220px; max-width: 300px; max-height: 300px;
             border-radius: 50%; background: radial-gradient(circle, #0a1428 0%, #000000 100%); 
@@ -92,9 +90,12 @@
         
         .pick-container { display: flex; flex: 1; width: 100%; overflow: hidden; justify-content: space-between; position: relative; }
         
-        /* 💡 수정됨: 좌/우 패널 min-width를 120px로 확 줄여서 모바일 화면 양옆이 잘리지 않게 함 */
+        /* 좌/우 패널 min-width를 120px로 확 줄여서 모바일 화면 양옆이 잘리지 않게 함 */
         .pick-left-panel { width: 25%; min-width: 140px; border-right: 1px solid rgba(200, 170, 110, 0.3); display: flex; flex-direction: column; background: rgba(0,0,0,0.4); }
-        .pick-team-list { flex: 1; display: flex; flex-direction: column; padding: 10px 5px; gap: 10px; overflow-y: auto; }
+        
+        /* 💡 수정됨: justify-content: center; 를 추가하여 신랑/신부 카드를 수직 중앙으로 예쁘게 정렬 */
+        .pick-team-list { flex: 1; display: flex; flex-direction: column; justify-content: center; padding: 10px 5px; gap: 10px; overflow-y: auto; }
+        
         .pick-player { display: flex; align-items: center; gap: 8px; padding: 8px; background: rgba(30, 35, 40, 0.8); border: 1px solid var(--lol-border); border-radius: 5px; }
         .pick-player-img { width: 40px; height: 40px; border-radius: 50%; border: 2px solid var(--lol-gold); background-size: cover; background-position: center; background-color: #333; flex-shrink: 0; }
         .pick-player-info { display: flex; flex-direction: column; overflow: hidden; }
@@ -170,13 +171,13 @@
         <div id="queue-screen" class="screen hidden">
             <div class="circle-container">
                 <h2>웨딩을 찾았습니다!</h2>
-                <p>제이아트 • 11.15 • 영원한 듀오 • 2인큐</p>
+                <p>글로리아 • 11.15 • 영원한 듀오 • 2인큐</p>
                 <button id="accept-btn" onclick="goToPick()">수락!</button>
             </div>
         </div>
 
         <div id="pick-screen" class="screen">
-            <div class="pick-header">11.15. 12:00 제이아트 웨딩홀</div>
+            <div class="pick-header">11.15. 12:00 글로리아 웨딩홀</div>
             
             <div class="pick-container">
                 <div class="pick-left-panel">
