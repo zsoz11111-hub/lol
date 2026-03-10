@@ -14,13 +14,16 @@
             --riot-red: #eb0029; 
         }
 
+        /* 💡 수정됨: 모든 요소의 테두리와 여백을 크기에 포함시켜 잘림 방지 */
+        * { box-sizing: border-box; }
+
         body, html {
             margin: 0; padding: 0; width: 100%; height: 100%;
             overflow: hidden; background-color: black;
             font-family: 'Noto Sans KR', sans-serif; color: white;
         }
 
-        /* 🔥 혁신적인 화면 회전 래퍼 (스마트폰 세로 고정 완벽 대응) */
+        /* 화면 자동 회전 래퍼 */
         #app-wrapper {
             position: absolute; top: 0; left: 0;
             width: 100%; height: 100%;
@@ -28,8 +31,8 @@
         }
         @media screen and (orientation: portrait) {
             #app-wrapper {
-                width: 100vh;
-                height: 100vw;
+                /* 최신 모바일 브라우저 주소창 높이까지 고려한 dvh/dvw 단위 사용 */
+                width: 100dvh; height: 100dvw;
                 transform: rotate(90deg);
                 transform-origin: top left;
                 left: 100vw;
@@ -41,104 +44,107 @@
 
         /* --- 1단계: 심플 모던 라이엇 로그인 화면 --- */
         #login-screen { display: flex; flex-direction: row; background: #fff; z-index: 4; }
+        
+        /* 💡 수정됨: 좌우 잘림 방지를 위해 min-width 축소 */
         .login-left {
-            width: 35%; min-width: 250px; background: #fff; 
+            width: 35%; min-width: 200px; max-width: 400px; background: #fff; 
             display: flex; flex-direction: column; align-items: center; justify-content: center;
-            color: #111; box-sizing: border-box; padding: 0 20px;
+            color: #111; padding: 0 15px;
         }
         
         .login-right { flex: 1; background: #000 url('login-bg.jpg?v=1') center/cover no-repeat; }
         
-        .riot-logo { color: var(--riot-red); font-weight: 900; font-size: 1.5rem; margin-bottom: 5%; letter-spacing: -1px; display: flex; align-items: center; gap: 5px; }
-        .riot-logo::before { content: '👊'; font-size: 1.8rem; }
+        .riot-logo { color: var(--riot-red); font-weight: 900; font-size: 1.3rem; margin-bottom: 5%; letter-spacing: -1px; display: flex; align-items: center; gap: 5px; }
+        .riot-logo::before { content: '👊'; font-size: 1.5rem; }
         
-        .login-title { font-size: 1.2rem; font-weight: bold; margin-bottom: 5%; width: 80%; text-align: left; }
+        .login-title { font-size: 1.1rem; font-weight: bold; margin-bottom: 5%; width: 85%; text-align: left; }
         
-        .modern-input {
-            width: 80%; padding: 12px; margin-bottom: 15px; background: #ededed;
-            border: none; border-radius: 4px; font-size: 0.9rem; font-weight: bold; color: #333; outline: none;
-        }
+        .modern-input { width: 85%; padding: 10px; margin-bottom: 12px; background: #ededed; border: none; border-radius: 4px; font-size: 0.85rem; font-weight: bold; color: #333; outline: none; }
         .modern-input::placeholder { color: #aaa; font-weight: normal; }
         
-        .btn-login {
-            width: 80%; padding: 12px; background: var(--riot-red); 
-            border: none; color: white; font-weight: bold; border-radius: 4px;
-            font-size: 1rem; cursor: pointer; margin-bottom: 10px; transition: 0.3s;
-        }
-        .btn-guest {
-            width: 80%; padding: 12px; background: transparent; 
-            border: 2px solid #ddd; color: #555; border-radius: 4px;
-            font-weight: bold; font-size: 1rem; cursor: pointer; transition: 0.3s;
-        }
+        .btn-login { width: 85%; padding: 10px; background: var(--riot-red); border: none; color: white; font-weight: bold; border-radius: 4px; font-size: 0.9rem; cursor: pointer; margin-bottom: 10px; transition: 0.3s; }
+        .btn-guest { width: 85%; padding: 10px; background: transparent; border: 2px solid #ddd; color: #555; border-radius: 4px; font-weight: bold; font-size: 0.9rem; cursor: pointer; transition: 0.3s; }
         .btn-login:hover { filter: brightness(1.2); }
         .btn-guest:hover { background: #f5f5f5; color: #111; border-color: #bbb; }
 
         /* --- 2단계: 큐 수락 화면 --- */
         #queue-screen { background-color: rgba(0, 0, 0, 0.95); z-index: 3; justify-content: center; align-items: center; flex-direction: column; }
-        .circle-container { position: relative; width: 280px; height: 280px; border-radius: 50%; background: radial-gradient(circle, #0a1428 0%, #000000 100%); display: flex; flex-direction: column; justify-content: center; align-items: center; border: 2px solid #005a82; box-shadow: 0 0 20px #0ac8b9; animation: pulse 2s infinite; }
+        
+        /* 💡 수정됨: 원 크기를 유동적으로 변경하고, 글자 크기를 롤 클라이언트처럼 세련되게 축소 */
+        .circle-container { 
+            position: relative; width: 45vmin; height: 45vmin; min-width: 220px; min-height: 220px; max-width: 300px; max-height: 300px;
+            border-radius: 50%; background: radial-gradient(circle, #0a1428 0%, #000000 100%); 
+            display: flex; flex-direction: column; justify-content: center; align-items: center; 
+            border: 2px solid #005a82; box-shadow: 0 0 20px #0ac8b9; animation: pulse 2s infinite; 
+            padding: 15px; text-align: center;
+        }
         @keyframes pulse { 0% { box-shadow: 0 0 10px #0ac8b9; } 50% { box-shadow: 0 0 40px #0bc6e3; } 100% { box-shadow: 0 0 10px #0ac8b9; } }
-        #accept-btn { margin-top: 20px; padding: 10px 40px; background-color: transparent; color: var(--lol-gold); border: 2px solid var(--lol-gold); font-size: 1.2rem; font-weight: bold; cursor: pointer; transition: 0.3s; }
+        
+        .circle-container h2 { font-size: 1.4rem; margin-bottom: 5px; color: #0bc6e3; text-shadow: 0 0 5px #0bc6e3; letter-spacing: 1px; }
+        .circle-container p { color: #a09b8c; font-size: 0.75rem; margin-top: 0; line-height: 1.4; word-break: keep-all; }
+        
+        #accept-btn { margin-top: 15px; padding: 8px 30px; background-color: transparent; color: var(--lol-gold); border: 1px solid var(--lol-gold); font-size: 1.1rem; font-weight: bold; cursor: pointer; transition: 0.3s; }
         #accept-btn:hover { background: rgba(200, 170, 110, 0.2); box-shadow: 0 0 15px var(--lol-gold); }
 
         /* --- 3단계: 픽창 화면 --- */
         #pick-screen { background-color: var(--lol-bg-dark); z-index: 2; flex-direction: column; position: relative; opacity: 0; pointer-events: none; }
-        .pick-header { text-align: center; padding: 15px; font-size: 1.8rem; font-weight: bold; color: #f0e6d2; border-bottom: 1px solid rgba(200, 170, 110, 0.3); letter-spacing: 2px; flex-shrink: 0; }
+        .pick-header { text-align: center; padding: 10px; font-size: 1.5rem; font-weight: bold; color: #f0e6d2; border-bottom: 1px solid rgba(200, 170, 110, 0.3); letter-spacing: 2px; flex-shrink: 0; }
         
         .pick-container { display: flex; flex: 1; width: 100%; overflow: hidden; justify-content: space-between; position: relative; }
         
-        /* 좌측 패널 */
-        .pick-left-panel { width: 25%; min-width: 180px; border-right: 1px solid rgba(200, 170, 110, 0.3); display: flex; flex-direction: column; background: rgba(0,0,0,0.4); box-sizing: border-box; }
-        .pick-team-list { flex: 1; display: flex; flex-direction: column; padding: 5% 3%; gap: 10px; overflow-y: auto; }
-        .pick-player { display: flex; align-items: center; gap: 12px; padding: 10px; background: rgba(30, 35, 40, 0.8); border: 1px solid var(--lol-border); border-radius: 5px; }
-        .pick-player-img { width: 50px; height: 50px; border-radius: 50%; border: 2px solid var(--lol-gold); background-size: cover; background-position: center; background-color: #333; }
-        .pick-player-info { display: flex; flex-direction: column; }
-        .pick-player-status { font-size: 0.75rem; color: #0bc6e3; margin-bottom: 3px; font-weight: bold; }
-        .pick-player-name { font-size: 0.95rem; font-weight: bold; color: white; }
+        /* 💡 수정됨: 좌/우 패널 min-width를 120px로 확 줄여서 모바일 화면 양옆이 잘리지 않게 함 */
+        .pick-left-panel { width: 25%; min-width: 140px; border-right: 1px solid rgba(200, 170, 110, 0.3); display: flex; flex-direction: column; background: rgba(0,0,0,0.4); }
+        .pick-team-list { flex: 1; display: flex; flex-direction: column; padding: 10px 5px; gap: 10px; overflow-y: auto; }
+        .pick-player { display: flex; align-items: center; gap: 8px; padding: 8px; background: rgba(30, 35, 40, 0.8); border: 1px solid var(--lol-border); border-radius: 5px; }
+        .pick-player-img { width: 40px; height: 40px; border-radius: 50%; border: 2px solid var(--lol-gold); background-size: cover; background-position: center; background-color: #333; flex-shrink: 0; }
+        .pick-player-info { display: flex; flex-direction: column; overflow: hidden; }
+        .pick-player-status { font-size: 0.65rem; color: #0bc6e3; margin-bottom: 2px; font-weight: bold; }
+        .pick-player-name { font-size: 0.85rem; font-weight: bold; color: white; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 
-        .chat-box-pick { height: 25%; min-height: 100px; background: rgba(0, 0, 0, 0.8); border-top: 1px solid var(--lol-border); border-left: 2px solid var(--lol-gold); padding: 15px; font-size: 0.85rem; color: #a09b8c; display: flex; flex-direction: column; justify-content: flex-end; }
+        .chat-box-pick { height: 28%; min-height: 80px; background: rgba(0, 0, 0, 0.8); border-top: 1px solid var(--lol-border); border-left: 2px solid var(--lol-gold); padding: 10px; font-size: 0.75rem; color: #a09b8c; display: flex; flex-direction: column; justify-content: flex-end; }
 
         /* 중앙 패널 */
         .pick-center-panel { flex: 1; display: flex; flex-direction: column; justify-content: space-between; align-items: center; position: relative; }
-        .pick-content { flex: 1; display: flex; justify-content: center; align-items: center; gap: 3%; width: 100%; padding: 0 20px; }
-        .champ-card { width: 28%; height: 75%; min-width: 120px; max-width: 180px; max-height: 280px; background: linear-gradient(to bottom, #1e2328, #010a13); border: 2px solid #5c5b57; border-radius: 5px; display: flex; flex-direction: column; justify-content: flex-end; align-items: center; transition: 0.3s; cursor: pointer; position: relative; overflow: hidden; background-size: cover; background-position: center; }
+        .pick-content { flex: 1; display: flex; justify-content: center; align-items: center; gap: 2%; width: 100%; padding: 0 10px; }
+        .champ-card { width: 30%; height: 70%; min-width: 80px; max-width: 160px; max-height: 250px; background: linear-gradient(to bottom, #1e2328, #010a13); border: 2px solid #5c5b57; border-radius: 5px; display: flex; flex-direction: column; justify-content: flex-end; align-items: center; transition: 0.3s; cursor: pointer; position: relative; overflow: hidden; background-size: cover; background-position: center; }
         .champ-card:hover { border-color: var(--lol-gold); box-shadow: 0 0 15px rgba(200,170,110,0.6); transform: translateY(-5px); }
-        .champ-name { width: 100%; text-align: center; font-size: 0.9rem; font-weight: bold; color: white; background: rgba(0,0,0,0.7); padding: 10px 0; border-top: 1px solid var(--lol-gold); }
+        .champ-name { width: 100%; text-align: center; font-size: 0.8rem; font-weight: bold; color: white; background: rgba(0,0,0,0.7); padding: 8px 0; border-top: 1px solid var(--lol-gold); }
         
-        .start-game-btn-container { width: 100%; text-align: center; padding-bottom: 20px; flex-shrink: 0; }
-        #start-game-btn { padding: 15px 50px; background: transparent; border: 2px solid var(--lol-gold); color: var(--lol-gold); font-size: 1.3rem; font-weight: bold; cursor: pointer; transition: 0.3s; box-shadow: 0 0 10px var(--lol-gold); letter-spacing: 1px; }
+        .start-game-btn-container { width: 100%; text-align: center; padding-bottom: 15px; flex-shrink: 0; }
+        #start-game-btn { padding: 10px 40px; background: transparent; border: 2px solid var(--lol-gold); color: var(--lol-gold); font-size: 1.1rem; font-weight: bold; cursor: pointer; transition: 0.3s; box-shadow: 0 0 10px var(--lol-gold); letter-spacing: 1px; }
         #start-game-btn:hover { background: rgba(200, 170, 110, 0.2); box-shadow: 0 0 20px var(--lol-gold); }
 
         /* 우측 패널 */
-        .pick-right-panel { width: 25%; min-width: 180px; border-left: 1px solid rgba(200, 170, 110, 0.3); display: flex; flex-direction: column; background: rgba(0,0,0,0.4); box-sizing: border-box; }
-        .pick-enemy-list { flex: 1; display: flex; flex-direction: column; padding: 5% 3%; gap: 10px; overflow-y: auto; align-items: flex-end; }
-        .enemy-player { display: flex; align-items: center; justify-content: flex-end; gap: 12px; padding: 10px; width: 90%; background: rgba(40, 20, 20, 0.6); border: 1px solid #3c2020; border-radius: 5px; }
-        .enemy-img { width: 45px; height: 45px; border-radius: 50%; border: 2px solid #ff4e50; background-color: #111; background-size: cover; background-position: center; display: flex; justify-content: center; align-items: center; font-size: 1.2rem; }
-        .enemy-info { text-align: right; display: flex; flex-direction: column; }
-        .enemy-status { font-size: 0.75rem; color: #ff4e50; margin-bottom: 3px; font-weight: bold; }
-        .enemy-name { font-size: 0.85rem; font-weight: bold; color: #f0e6d2; }
+        .pick-right-panel { width: 25%; min-width: 140px; border-left: 1px solid rgba(200, 170, 110, 0.3); display: flex; flex-direction: column; background: rgba(0,0,0,0.4); }
+        .pick-enemy-list { flex: 1; display: flex; flex-direction: column; padding: 10px 5px; gap: 8px; overflow-y: auto; align-items: flex-end; }
+        .enemy-player { display: flex; align-items: center; justify-content: flex-end; gap: 8px; padding: 8px; width: 100%; background: rgba(40, 20, 20, 0.6); border: 1px solid #3c2020; border-radius: 5px; }
+        .enemy-img { width: 40px; height: 40px; border-radius: 50%; border: 2px solid #ff4e50; background-color: #111; background-size: cover; background-position: center; display: flex; justify-content: center; align-items: center; font-size: 1.1rem; flex-shrink: 0; }
+        .enemy-info { text-align: right; display: flex; flex-direction: column; overflow: hidden; }
+        .enemy-status { font-size: 0.65rem; color: #ff4e50; margin-bottom: 2px; font-weight: bold; }
+        .enemy-name { font-size: 0.85rem; font-weight: bold; color: #f0e6d2; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 
         /* --- 4단계: 게임 화면 --- */
         #game-screen { background: url('ingame-bg.jpg') center/cover; opacity: 0; z-index: 1; pointer-events: none; flex-direction: column; justify-content: space-between; }
         .ingame-announcement { text-align: center; margin-top: 3%; animation: dropDown 1s ease-out; }
-        .ingame-announcement h2 { font-size: 3.5rem; margin: 0; background: linear-gradient(to bottom, #f0e6d2, #c8aa6e); -webkit-background-clip: text; -webkit-text-fill-color: transparent; filter: drop-shadow(0 0 10px #0bc6e3); font-weight: 900; }
+        .ingame-announcement h2 { font-size: 2.5rem; margin: 0; background: linear-gradient(to bottom, #f0e6d2, #c8aa6e); -webkit-background-clip: text; -webkit-text-fill-color: transparent; filter: drop-shadow(0 0 10px #0bc6e3); font-weight: 900; }
         
-        .pentakill-face-container { width: 90px; height: 90px; border-radius: 50%; border: 3px solid var(--lol-gold); margin: 10px auto; background: #333 url('couple-face.jpg') center/cover; }
+        .pentakill-face-container { width: 80px; height: 80px; border-radius: 50%; border: 3px solid var(--lol-gold); margin: 5px auto; background: #333 url('couple-face.jpg') center/cover; }
         
         @keyframes dropDown { from { transform: translateY(-50px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
-        .ingame-chat { position: absolute; bottom: 20px; left: 20px; width: 35%; max-width: 300px; background: rgba(0,0,0,0.6); padding: 10px; font-size: 0.85rem; text-shadow: 1px 1px 1px black; border-left: 2px solid var(--lol-blue); line-height: 1.5; }
+        .ingame-chat { position: absolute; bottom: 20px; left: 15px; width: 35%; max-width: 250px; background: rgba(0,0,0,0.6); padding: 8px; font-size: 0.75rem; text-shadow: 1px 1px 1px black; border-left: 2px solid var(--lol-blue); line-height: 1.4; }
         
-        .hud-container { display: flex; justify-content: center; align-items: flex-end; width: 100%; padding-bottom: 20px; }
-        .skill-bar { display: flex; gap: 15px; background: rgba(1, 10, 19, 0.9); padding: 10px 20px; border: 2px solid #5c5b57; border-radius: 10px; border-top: 3px solid var(--lol-gold); box-shadow: 0 0 20px rgba(0,0,0,0.9); position: relative; }
+        .hud-container { display: flex; justify-content: center; align-items: flex-end; width: 100%; padding-bottom: 15px; }
+        .skill-bar { display: flex; gap: 10px; background: rgba(1, 10, 19, 0.9); padding: 8px 15px; border: 2px solid #5c5b57; border-radius: 10px; border-top: 3px solid var(--lol-gold); box-shadow: 0 0 20px rgba(0,0,0,0.9); position: relative; }
         
-        .level-tag { position: absolute; bottom: -5px; background: #010a13; border: 1px solid var(--lol-gold); border-radius: 50%; width: 2.2rem; height: 2.2rem; display: flex; justify-content: center; align-items: center; color: var(--lol-gold); font-weight: bold; font-size: 1rem; text-shadow: 0 0 5px var(--lol-gold); }
-        .level-11 { left: -15px; }
-        .level-15 { right: -15px; }
+        .level-tag { position: absolute; bottom: -5px; background: #010a13; border: 1px solid var(--lol-gold); border-radius: 50%; width: 2rem; height: 2rem; display: flex; justify-content: center; align-items: center; color: var(--lol-gold); font-weight: bold; font-size: 0.9rem; text-shadow: 0 0 5px var(--lol-gold); }
+        .level-11 { left: -10px; }
+        .level-15 { right: -10px; }
 
         .skill-btn { display: flex; flex-direction: column; align-items: center; cursor: pointer; transition: 0.2s; }
-        .skill-icon { width: 55px; height: 55px; background-color: #222; border: 2px solid #5c5b57; border-radius: 5px; background-size: cover; background-position: center; display: flex; justify-content: center; align-items: center; font-size: 1.5rem; }
+        .skill-icon { width: 50px; height: 50px; background-color: #222; border: 2px solid #5c5b57; border-radius: 5px; background-size: cover; background-position: center; display: flex; justify-content: center; align-items: center; font-size: 1.3rem; }
         .skill-btn:hover .skill-icon { border-color: var(--lol-gold); box-shadow: 0 0 15px var(--lol-gold); transform: translateY(-5px); }
-        .skill-key { background: black; color: white; font-size: 0.75rem; padding: 2px 6px; margin-top: -12px; z-index: 2; border: 1px solid #5c5b57; font-weight: bold; }
-        .skill-name { font-size: 0.85rem; color: #a09b8c; margin-top: 5px; font-weight: bold; text-align: center; }
+        .skill-key { background: black; color: white; font-size: 0.7rem; padding: 2px 5px; margin-top: -10px; z-index: 2; border: 1px solid #5c5b57; font-weight: bold; }
+        .skill-name { font-size: 0.75rem; color: #a09b8c; margin-top: 3px; font-weight: bold; text-align: center; }
         .spell-icon { border-radius: 50%; border-color: #0bc6e3; }
     </style>
 </head>
@@ -163,8 +169,8 @@
 
         <div id="queue-screen" class="screen hidden">
             <div class="circle-container">
-                <h2 style="font-size: 2rem; margin-bottom: 5px;">웨딩을 찾았습니다!</h2>
-                <p style="color: #a09b8c; font-size: 0.9rem; margin-top: 0; text-align: center;">제이아트 • 11.15 • 영원한 듀오 • 2인큐</p>
+                <h2>웨딩을 찾았습니다!</h2>
+                <p>제이아트 • 11.15 • 영원한 듀오 • 2인큐</p>
                 <button id="accept-btn" onclick="goToPick()">수락!</button>
             </div>
         </div>
@@ -192,8 +198,8 @@
                     </div>
 
                     <div class="chat-box-pick">
-                        <div id="pick-chat-messages" style="margin-bottom: 8px; font-weight: bold;"></div>
-                        <div style="border-top: 1px solid #3c3c41; padding-top: 5px; color: #555;"><span style="color:#0bc6e3;">💬</span> 클릭하거나 Enter 키를 눌러 보기</div>
+                        <div id="pick-chat-messages" style="margin-bottom: 5px; font-weight: bold;"></div>
+                        <div style="border-top: 1px solid #3c3c41; padding-top: 5px; color: #555;"><span style="color:#0bc6e3;">💬</span> 클릭하여 보기</div>
                     </div>
                 </div>
 
@@ -249,17 +255,19 @@
                     <div class="level-tag level-11">11</div>
                     <div class="level-tag level-15">15</div>
 
-                    <div class="skill-btn" onclick="alert('갤러리 창이 열립니다.')"><div class="skill-icon" style="background-image: url('icon-q.jpg');">📸</div><div class="skill-key">Q</div><div class="skill-name">갤러리 보기</div></div>
-                    <div class="skill-btn" onclick="alert('지도 창이 열립니다.')"><div class="skill-icon" style="background-image: url('icon-w.jpg');">🗺️</div><div class="skill-key">W</div><div class="skill-name">식장 위치</div></div>
-                    <div class="skill-btn" onclick="alert('계좌 창이 열립니다.')"><div class="skill-icon" style="background-image: url('icon-e.jpg');">💳</div><div class="skill-key">E</div><div class="skill-name">계좌 번호</div></div>
-                    <div class="skill-btn" onclick="alert('참석 여부 창이 열립니다.')"><div class="skill-icon" style="background-image: url('icon-r.jpg'); border-color: var(--lol-gold);">💌</div><div class="skill-key" style="color: var(--lol-gold); border-color: var(--lol-gold);">R</div><div class="skill-name" style="color: var(--lol-gold);">참석 여부</div></div>
+                    <div class="skill-btn" onclick="alert('갤러리 창이 열립니다.')"><div class="skill-icon" style="background-image: url('icon-q.jpg');">📸</div><div class="skill-key">Q</div><div class="skill-name">갤러리</div></div>
+                    <div class="skill-btn" onclick="alert('지도 창이 열립니다.')"><div class="skill-icon" style="background-image: url('icon-w.jpg');">🗺️</div><div class="skill-key">W</div><div class="skill-name">식장위치</div></div>
+                    <div class="skill-btn" onclick="alert('계좌 창이 열립니다.')"><div class="skill-icon" style="background-image: url('icon-e.jpg');">💳</div><div class="skill-key">E</div><div class="skill-name">계좌번호</div></div>
+                    <div class="skill-btn" onclick="alert('참석 여부 창이 열립니다.')"><div class="skill-icon" style="background-image: url('icon-r.jpg'); border-color: var(--lol-gold);">💌</div><div class="skill-key" style="color: var(--lol-gold); border-color: var(--lol-gold);">R</div><div class="skill-name" style="color: var(--lol-gold);">참석여부</div></div>
                     <div style="width: 2vw;"></div>
-                    <div class="skill-btn" onclick="alert('방명록 창이 열립니다.')"><div class="skill-icon spell-icon" style="background-image: url('icon-d.jpg');">📝</div><div class="skill-key">D</div><div class="skill-name">방명록 작성</div></div>
+                    <div class="skill-btn" onclick="alert('방명록 창이 열립니다.')"><div class="skill-icon spell-icon" style="background-image: url('icon-d.jpg');">📝</div><div class="skill-key">D</div><div class="skill-name">방명록</div></div>
                 </div>
             </div>
         </div>
 
-    </div> <script>
+    </div>
+
+    <script>
         function login(isGuest) {
             let nickname = "게스트";
             if (!isGuest) {
