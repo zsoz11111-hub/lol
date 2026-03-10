@@ -111,27 +111,40 @@
         .enemy-status { font-size: 0.65rem; color: #ff4e50; margin-bottom: 2px; font-weight: bold; }
         .enemy-name { font-size: 0.85rem; font-weight: bold; color: #f0e6d2; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 
-        #game-screen { background: url('ingame-bg.jpg') center/cover; opacity: 0; z-index: 1; pointer-events: none; flex-direction: column; justify-content: space-between; }
-        .ingame-announcement { text-align: center; margin-top: 3%; animation: dropDown 1s ease-out; }
-        .ingame-announcement h2 { font-size: 2.5rem; margin: 0; background: linear-gradient(to bottom, #f0e6d2, #c8aa6e); -webkit-background-clip: text; -webkit-text-fill-color: transparent; filter: drop-shadow(0 0 10px #0bc6e3); font-weight: 900; }
+        /* 4단계: 첨부해주신 이미지를 배경으로 사용 */
+        #game-screen { background: url('image_799afc.png') center/cover no-repeat; opacity: 0; z-index: 1; pointer-events: none; flex-direction: column; justify-content: space-between; }
         
-        .pentakill-face-container { width: 80px; height: 80px; border-radius: 50%; border: 3px solid var(--lol-gold); margin: 5px auto; background: #333 url('couple-face.jpg') center/cover; }
+        /* 인게임 채팅창 오버레이 디자인 (구역 분리 적용) */
+        .ingame-chat { 
+            position: absolute; bottom: 85px; left: 15px; width: 35%; max-width: 280px; 
+            background: rgba(0,0,0,0.5); /* 배경 반투명화 */
+            padding: 8px; font-size: 0.75rem; text-shadow: 1px 1px 1px black; 
+            border-left: 2px solid var(--lol-blue); line-height: 1.4; 
+            display: flex; flex-direction: column; max-height: 180px; 
+        }
+        #ingame-user-chats { flex-grow: 1; overflow-y: auto; margin-bottom: 5px; }
+        #ingame-system-chats { flex-shrink: 0; border-top: 1px solid rgba(255, 255, 255, 0.2); padding-top: 5px; }
         
-        @keyframes dropDown { from { transform: translateY(-50px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
-        .ingame-chat { position: absolute; bottom: 20px; left: 15px; width: 35%; max-width: 250px; background: rgba(0,0,0,0.6); padding: 8px; font-size: 0.75rem; text-shadow: 1px 1px 1px black; border-left: 2px solid var(--lol-blue); line-height: 1.4; overflow-y: auto; max-height: 150px; }
-        
+        /* 하단 스킬 버튼 디자인 (오버레이 적용) */
         .hud-container { display: flex; justify-content: center; align-items: flex-end; width: 100%; padding-bottom: 15px; }
-        .skill-bar { display: flex; gap: 10px; background: rgba(1, 10, 19, 0.9); padding: 8px 15px; border: 2px solid #5c5b57; border-radius: 10px; border-top: 3px solid var(--lol-gold); box-shadow: 0 0 20px rgba(0,0,0,0.9); position: relative; }
+        .skill-bar { 
+            display: flex; gap: 10px; padding: 8px 15px; border-radius: 10px; position: relative;
+            background: rgba(1, 10, 19, 0.6); /* 뒷배경 그림이 보이도록 반투명화 */
+            border: 1px solid rgba(92, 91, 87, 0.5); border-top: 2px solid rgba(200, 170, 110, 0.8); 
+        }
         
         .level-tag { position: absolute; bottom: -5px; background: #010a13; border: 1px solid var(--lol-gold); border-radius: 50%; width: 2rem; height: 2rem; display: flex; justify-content: center; align-items: center; color: var(--lol-gold); font-weight: bold; font-size: 0.9rem; text-shadow: 0 0 5px var(--lol-gold); }
         .level-11 { left: -10px; }
         .level-15 { right: -10px; }
 
         .skill-btn { display: flex; flex-direction: column; align-items: center; cursor: pointer; transition: 0.2s; }
-        .skill-icon { width: 50px; height: 50px; background-color: #222; border: 2px solid #5c5b57; border-radius: 5px; background-size: cover; background-position: center; display: flex; justify-content: center; align-items: center; font-size: 1.3rem; }
+        .skill-icon { 
+            width: 45px; height: 45px; border-radius: 5px; background-size: cover; background-position: center; 
+            display: flex; justify-content: center; align-items: center; font-size: 1.2rem;
+            border: 2px solid rgba(92, 91, 87, 0.8); background-color: rgba(34, 34, 34, 0.7); 
+        }
         .skill-btn:hover .skill-icon { border-color: var(--lol-gold); box-shadow: 0 0 15px var(--lol-gold); transform: translateY(-5px); }
-        .skill-key { background: black; color: white; font-size: 0.7rem; padding: 2px 5px; margin-top: -10px; z-index: 2; border: 1px solid #5c5b57; font-weight: bold; }
-        .skill-name { font-size: 0.75rem; color: #a09b8c; margin-top: 3px; font-weight: bold; text-align: center; }
+        .skill-key { background: rgba(0,0,0,0.8); color: white; font-size: 0.7rem; padding: 2px 5px; margin-top: -8px; z-index: 2; border: 1px solid #5c5b57; font-weight: bold; }
         .spell-icon { border-radius: 50%; border-color: #0bc6e3; }
     </style>
 </head>
@@ -163,42 +176,25 @@
 
         <div id="pick-screen" class="screen">
             <div class="pick-header">11.15. 12:00 글로리아 웨딩홀</div>
-            
             <div class="pick-container">
                 <div class="pick-left-panel">
                     <div class="pick-team-list">
-                        <div class="pick-player">
-                            <div class="pick-player-img" style="background-image: url('groom-face.jpg');"></div>
-                            <div class="pick-player-info">
-                                <span class="pick-player-status">준비 완료</span>
-                                <span class="pick-player-name">신랑 OOO</span>
-                            </div>
-                        </div>
-                        <div class="pick-player">
-                            <div class="pick-player-img" style="background-image: url('bride-face.jpg');"></div>
-                            <div class="pick-player-info">
-                                <span class="pick-player-status">준비 완료</span>
-                                <span class="pick-player-name">신부 OOO</span>
-                            </div>
-                        </div>
+                        <div class="pick-player"><div class="pick-player-img" style="background-image: url('groom-face.jpg');"></div><div class="pick-player-info"><span class="pick-player-status">준비 완료</span><span class="pick-player-name">신랑 OOO</span></div></div>
+                        <div class="pick-player"><div class="pick-player-img" style="background-image: url('bride-face.jpg');"></div><div class="pick-player-info"><span class="pick-player-status">준비 완료</span><span class="pick-player-name">신부 OOO</span></div></div>
                     </div>
-
                     <div class="chat-box-pick">
                         <div id="pick-chat-messages"></div>
                         <div style="border-top: 1px solid #3c3c41; padding-top: 5px; color: #555; margin-top: 5px;"><span style="color:#0bc6e3;">💬</span> 로비 접속 기록</div>
                     </div>
                 </div>
-
                 <div class="pick-center-panel">
                     <div class="pick-content">
                         <div class="champ-card" onclick="alert('갤러리 창이 열립니다.')" style="background-image: url('card1.jpg');"><div class="champ-name">갤러리 보기</div></div>
                         <div class="champ-card" onclick="alert('지도 창이 열립니다.')" style="background-image: url('card2.jpg');"><div class="champ-name">식장 위치 보기</div></div>
                         <div class="champ-card" onclick="alert('계좌 창이 열립니다.')" style="background-image: url('card3.jpg');"><div class="champ-name">계좌번호 보기</div></div>
                     </div>
-
                     <div class="start-game-btn-container"><button id="start-game-btn" onclick="startGame()">준비 완료!</button></div>
                 </div>
-
                 <div class="pick-right-panel">
                     <div class="pick-enemy-list">
                         <div class="enemy-player"><div class="enemy-info"><span class="enemy-status">확정됨</span><span class="enemy-name">세금 폭탄</span></div><div class="enemy-img" style="background-image: url('enemy-1.jpg');">💰</div></div>
@@ -212,25 +208,27 @@
         </div>
 
         <div id="game-screen" class="screen">
-            <div class="ingame-announcement">
-                <h2>결혼 펜타 킬!</h2>
-                <div class="pentakill-face-container"></div>
+            <div style="flex: 1;"></div> 
+
+            <div class="ingame-chat" id="ingame-chat-container">
+                <div id="ingame-user-chats"></div>
+                <div id="ingame-system-chats">
+                    <div style="color: #ff4e50;">[시스템] 새로운 랭크 게임(결혼)이 시작되었습니다.</div>
+                    <div style="color: #a09b8c;">[시스템] 하단의 스킬을 클릭하여 축하해 주세요.</div>
+                </div>
             </div>
-            <div class="ingame-chat" id="ingame-chat-messages">
-                <div style="color: #ff4e50;">[시스템] 새로운 랭크 게임(결혼)이 시작되었습니다.</div>
-                <div style="color: #a09b8c;">[시스템] 하단의 스킬을 클릭하여 축하해 주세요.</div>
-            </div>
+            
             <div class="hud-container">
                 <div class="skill-bar">
                     <div class="level-tag level-11">11</div>
                     <div class="level-tag level-15">15</div>
 
-                    <div class="skill-btn" onclick="alert('갤러리 창이 열립니다.')"><div class="skill-icon" style="background-image: url('icon-q.jpg');">📸</div><div class="skill-key">Q</div><div class="skill-name">갤러리</div></div>
-                    <div class="skill-btn" onclick="alert('지도 창이 열립니다.')"><div class="skill-icon" style="background-image: url('icon-w.jpg');">🗺️</div><div class="skill-key">W</div><div class="skill-name">식장위치</div></div>
-                    <div class="skill-btn" onclick="alert('계좌 창이 열립니다.')"><div class="skill-icon" style="background-image: url('icon-e.jpg');">💳</div><div class="skill-key">E</div><div class="skill-name">계좌번호</div></div>
-                    <div class="skill-btn" onclick="alert('참석 여부 창이 열립니다.')"><div class="skill-icon" style="background-image: url('icon-r.jpg'); border-color: var(--lol-gold);">💌</div><div class="skill-key" style="color: var(--lol-gold); border-color: var(--lol-gold);">R</div><div class="skill-name" style="color: var(--lol-gold);">참석여부</div></div>
+                    <div class="skill-btn" onclick="alert('갤러리 창이 열립니다.')"><div class="skill-icon" style="background-image: url('icon-q.jpg');">📸</div><div class="skill-key">Q</div></div>
+                    <div class="skill-btn" onclick="alert('지도 창이 열립니다.')"><div class="skill-icon" style="background-image: url('icon-w.jpg');">🗺️</div><div class="skill-key">W</div></div>
+                    <div class="skill-btn" onclick="alert('계좌 창이 열립니다.')"><div class="skill-icon" style="background-image: url('icon-e.jpg');">💳</div><div class="skill-key">E</div></div>
+                    <div class="skill-btn" onclick="alert('참석 여부 창이 열립니다.')"><div class="skill-icon" style="background-image: url('icon-r.jpg'); border-color: var(--lol-gold);">💌</div><div class="skill-key" style="color: var(--lol-gold); border-color: var(--lol-gold);">R</div></div>
                     <div style="width: 2vw;"></div>
-                    <div class="skill-btn" onclick="alert('방명록 창이 열립니다.')"><div class="skill-icon spell-icon" style="background-image: url('icon-d.jpg');">📝</div><div class="skill-key">D</div><div class="skill-name">방명록</div></div>
+                    <div class="skill-btn" onclick="alert('방명록 창이 열립니다.')"><div class="skill-icon spell-icon" style="background-image: url('icon-d.jpg');">📝</div><div class="skill-key">D</div></div>
                 </div>
             </div>
         </div>
@@ -248,8 +246,7 @@
             projectId: "lolwedding",
             storageBucket: "lolwedding.firebasestorage.app",
             messagingSenderId: "728810675773",
-            appId: "1:728810675773:web:2b59d63a69e833ea131454",
-            measurementId: "G-51T779HHZP"
+            appId: "1:728810675773:web:2b59d63a69e833ea131454"
         };
 
         // Firebase 초기화
@@ -257,7 +254,7 @@
         const db = firebase.database();
         const chatRef = db.ref('wedding_lobby_logs');
 
-        // DB에 접속 기록이 추가될 때마다 실행 (채팅 불러오기)
+        // DB에 접속 기록이 추가될 때마다 실행
         chatRef.on('child_added', (snapshot) => {
             const data = snapshot.val();
             
@@ -265,27 +262,22 @@
             const pickChatBox = document.getElementById('pick-chat-messages');
             if (pickChatBox) {
                 pickChatBox.innerHTML += `<div style="margin-bottom: 3px; font-weight: normal;"><span style="color: #0bc6e3;">${data.name}</span>님이 로비에 접속하셨습니다.</div>`;
-                pickChatBox.scrollTop = pickChatBox.scrollHeight; // 스크롤 맨 아래로 유지
+                pickChatBox.scrollTop = pickChatBox.scrollHeight;
             }
             
-            // 4단계(인게임) 채팅 추가
-            const gameChatBox = document.getElementById('ingame-chat-messages');
-            if (gameChatBox) {
-                gameChatBox.innerHTML += `<div style="color: #0bc6e3;">[전체] <span style="font-weight:bold;">${data.name}</span>: 웨딩홀에 접속했습니다!</div>`;
-                gameChatBox.scrollTop = gameChatBox.scrollHeight;
+            // 4단계(인게임) 유저 전용 채팅 구역에 추가
+            const userChatBox = document.getElementById('ingame-user-chats');
+            if (userChatBox) {
+                userChatBox.innerHTML += `<div style="color: #0bc6e3;">[전체] <span style="font-weight:bold;">${data.name}</span>: 웨딩홀에 접속했습니다!</div>`;
+                userChatBox.scrollTop = userChatBox.scrollHeight;
             }
         });
 
-        // DB가 초기화되었을 때 클라이언트 화면도 비우기
+        // 초기화 시 클라이언트 화면도 비우기
         chatRef.on('child_removed', () => {
             document.getElementById('pick-chat-messages').innerHTML = '';
-            const gameChatBox = document.getElementById('ingame-chat-messages');
-            if (gameChatBox) {
-                gameChatBox.innerHTML = `
-                    <div style="color: #ff4e50;">[시스템] 새로운 랭크 게임(결혼)이 시작되었습니다.</div>
-                    <div style="color: #a09b8c;">[시스템] 하단의 스킬을 클릭하여 축하해 주세요.</div>
-                `;
-            }
+            const userChatBox = document.getElementById('ingame-user-chats');
+            if (userChatBox) userChatBox.innerHTML = '';
         });
 
         // 로그인 기능
@@ -300,20 +292,13 @@
                 nickname = inputVal;
             }
 
-            // [관리자 전용 초기화 기능]
             if (nickname === "초기화비밀번호1234") {
-                chatRef.remove().then(() => {
-                    alert("모든 방문자의 접속 기록이 초기화되었습니다.");
-                });
+                chatRef.remove().then(() => alert("모든 방문자의 접속 기록이 초기화되었습니다."));
                 document.getElementById('nickname-input').value = ""; 
-                return; // 다음 화면으로 넘어가지 않음
+                return; 
             }
 
-            // 일반 방문자의 접속 시 DB에 이름 기록
-            chatRef.push({
-                name: nickname,
-                time: Date.now()
-            });
+            chatRef.push({ name: nickname, time: Date.now() });
 
             document.getElementById('login-screen').classList.add('hidden');
             document.getElementById('queue-screen').classList.remove('hidden');
@@ -322,32 +307,24 @@
             if (sound) sound.play().catch(e => console.log("효과음 재생 차단됨", e));
         }
 
-        // 픽창으로 이동
         function goToPick() {
             const bgm = document.getElementById('lobby-bgm');
-            if (bgm) {
-                bgm.volume = 0.3; 
-                bgm.play().catch(e => console.log("BGM 재생 차단됨", e));
-            }
+            if (bgm) { bgm.volume = 0.3; bgm.play().catch(e => console.log("BGM 재생 차단됨", e)); }
 
             document.getElementById('queue-screen').classList.add('hidden');
             const pickScreen = document.getElementById('pick-screen');
-            pickScreen.style.opacity = '1';
-            pickScreen.style.pointerEvents = 'auto';
+            pickScreen.style.opacity = '1'; pickScreen.style.pointerEvents = 'auto';
         }
 
-        // 인게임 화면으로 이동
         function startGame() {
             const bgm = document.getElementById('lobby-bgm');
             if (bgm) bgm.pause();
 
             const pickScreen = document.getElementById('pick-screen');
-            pickScreen.classList.add('hidden');
-            pickScreen.style.opacity = '0'; 
+            pickScreen.classList.add('hidden'); pickScreen.style.opacity = '0'; 
             
             const gameScreen = document.getElementById('game-screen');
-            gameScreen.style.opacity = '1';
-            gameScreen.style.pointerEvents = 'auto'; 
+            gameScreen.style.opacity = '1'; gameScreen.style.pointerEvents = 'auto'; 
         }
     </script>
 </body>
