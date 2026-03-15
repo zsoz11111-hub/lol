@@ -19,137 +19,110 @@
         body, html {
             margin: 0; padding: 0; width: 100%; height: 100%;
             overflow: hidden; background-color: black;
-            font-family: 'Noto Sans KR', sans-serif; color: white;
+            font-family: 'Noto Sans KR', sans-serif; color: white; touch-action: none;
         }
 
         #app-wrapper {
-            position: absolute; top: 0; left: 0;
-            width: 100%; height: 100%;
-            overflow: hidden;
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%; overflow: hidden;
         }
         @media screen and (orientation: portrait) {
-            #app-wrapper {
-                width: 100dvh; height: 100dvw;
-                transform: rotate(90deg);
-                transform-origin: top left;
-                left: 100vw;
-            }
+            #app-wrapper { width: 100dvh; height: 100dvw; transform: rotate(90deg); transform-origin: top left; left: 100vw; }
         }
 
         .screen { position: absolute; width: 100%; height: 100%; top: 0; left: 0; transition: opacity 0.5s ease; display: flex; }
         .hidden { opacity: 0 !important; pointer-events: none; display: none !important; }
 
+        /* 로그인, 큐, 픽창 스타일 (기존과 동일) */
         #login-screen { display: flex; flex-direction: row; background: #fff; z-index: 4; }
-        .login-left {
-            width: 35%; min-width: 200px; max-width: 400px; background: #fff; 
-            display: flex; flex-direction: column; align-items: center; justify-content: center;
-            color: #111; padding: 0 15px;
-        }
+        .login-left { width: 35%; min-width: 200px; max-width: 400px; background: #fff; display: flex; flex-direction: column; align-items: center; justify-content: center; color: #111; padding: 0 15px; }
         .login-right { flex: 1; background: #000 url('login-bg.jpg?v=1') center/cover no-repeat; }
-        
         .riot-logo { color: var(--riot-red); font-weight: 900; font-size: 1.3rem; margin-bottom: 5%; letter-spacing: -1px; display: flex; align-items: center; gap: 5px; }
         .riot-logo::before { content: '👊'; font-size: 1.5rem; }
-        
         .login-title { font-size: 1.1rem; font-weight: bold; margin-bottom: 5%; width: 85%; text-align: left; }
-        
         .modern-input { width: 85%; padding: 10px; margin-bottom: 12px; background: #ededed; border: none; border-radius: 4px; font-size: 0.85rem; font-weight: bold; color: #333; outline: none; }
         .modern-input::placeholder { color: #aaa; font-weight: normal; }
-        
         .btn-login { width: 85%; padding: 10px; background: var(--riot-red); border: none; color: white; font-weight: bold; border-radius: 4px; font-size: 0.9rem; cursor: pointer; margin-bottom: 10px; transition: 0.3s; }
         .btn-guest { width: 85%; padding: 10px; background: transparent; border: 2px solid #ddd; color: #555; border-radius: 4px; font-weight: bold; font-size: 0.9rem; cursor: pointer; transition: 0.3s; }
-        .btn-login:hover { filter: brightness(1.2); }
-        .btn-guest:hover { background: #f5f5f5; color: #111; border-color: #bbb; }
-
-        #queue-screen { background-color: rgba(0, 0, 0, 0.95); z-index: 3; justify-content: center; align-items: center; flex-direction: column; }
-        .circle-container { 
-            position: relative; width: 45vmin; height: 45vmin; min-width: 220px; min-height: 220px; max-width: 300px; max-height: 300px;
-            border-radius: 50%; background: radial-gradient(circle, #0a1428 0%, #000000 100%); 
-            display: flex; flex-direction: column; justify-content: center; align-items: center; 
-            border: 2px solid #005a82; box-shadow: 0 0 20px #0ac8b9; animation: pulse 2s infinite; 
-            padding: 15px; text-align: center;
-        }
-        @keyframes pulse { 0% { box-shadow: 0 0 10px #0ac8b9; } 50% { box-shadow: 0 0 40px #0bc6e3; } 100% { box-shadow: 0 0 10px #0ac8b9; } }
         
+        #queue-screen { background-color: rgba(0, 0, 0, 0.95); z-index: 3; justify-content: center; align-items: center; flex-direction: column; }
+        .circle-container { position: relative; width: 45vmin; height: 45vmin; min-width: 220px; min-height: 220px; max-width: 300px; max-height: 300px; border-radius: 50%; background: radial-gradient(circle, #0a1428 0%, #000000 100%); display: flex; flex-direction: column; justify-content: center; align-items: center; border: 2px solid #005a82; box-shadow: 0 0 20px #0ac8b9; animation: pulse 2s infinite; padding: 15px; text-align: center; }
+        @keyframes pulse { 0% { box-shadow: 0 0 10px #0ac8b9; } 50% { box-shadow: 0 0 40px #0bc6e3; } 100% { box-shadow: 0 0 10px #0ac8b9; } }
         .circle-container h2 { font-size: 1.4rem; margin-bottom: 5px; color: #0bc6e3; text-shadow: 0 0 5px #0bc6e3; letter-spacing: 1px; }
         .circle-container p { color: #a09b8c; font-size: 0.75rem; margin-top: 0; line-height: 1.4; word-break: keep-all; }
-        
         #accept-btn { margin-top: 15px; padding: 8px 30px; background-color: transparent; color: var(--lol-gold); border: 1px solid var(--lol-gold); font-size: 1.1rem; font-weight: bold; cursor: pointer; transition: 0.3s; }
-        #accept-btn:hover { background: rgba(200, 170, 110, 0.2); box-shadow: 0 0 15px var(--lol-gold); }
-
+        
         #pick-screen { background-color: var(--lol-bg-dark); z-index: 2; flex-direction: column; position: relative; opacity: 0; pointer-events: none; }
         .pick-header { text-align: center; padding: 10px; font-size: 1.5rem; font-weight: bold; color: #f0e6d2; border-bottom: 1px solid rgba(200, 170, 110, 0.3); letter-spacing: 2px; flex-shrink: 0; }
-        
         .pick-container { display: flex; flex: 1; width: 100%; overflow: hidden; justify-content: space-between; position: relative; }
-        
         .pick-left-panel { width: 25%; min-width: 140px; border-right: 1px solid rgba(200, 170, 110, 0.3); display: flex; flex-direction: column; background: rgba(0,0,0,0.4); }
         .pick-team-list { flex: 1; display: flex; flex-direction: column; justify-content: center; padding: 10px 5px; gap: 10px; overflow-y: auto; }
-        
         .pick-player { display: flex; align-items: center; gap: 8px; padding: 8px; background: rgba(30, 35, 40, 0.8); border: 1px solid var(--lol-border); border-radius: 5px; }
-        .pick-player-img { width: 40px; height: 40px; border-radius: 50%; border: 2px solid var(--lol-gold); background-size: cover; background-position: center; background-color: #333; flex-shrink: 0; }
+        .pick-player-img { width: 40px; height: 40px; border-radius: 50%; border: 2px solid var(--lol-gold); background-color: #333; flex-shrink: 0; }
         .pick-player-info { display: flex; flex-direction: column; overflow: hidden; }
-        .pick-player-status { font-size: 0.65rem; color: #0bc6e3; margin-bottom: 2px; font-weight: bold; }
+        .pick-player-status { font-size: 0.65rem; color: #0bc6e3; font-weight: bold; }
         .pick-player-name { font-size: 0.85rem; font-weight: bold; color: white; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-
-        .chat-box-pick { height: 28%; min-height: 80px; background: rgba(0, 0, 0, 0.8); border-top: 1px solid var(--lol-border); border-left: 2px solid var(--lol-gold); padding: 10px; font-size: 0.75rem; color: #a09b8c; display: flex; flex-direction: column; justify-content: flex-end; }
-        #pick-chat-messages { margin-bottom: 5px; font-weight: bold; overflow-y: auto; flex-grow: 1; display: flex; flex-direction: column; justify-content: flex-end; }
-
-        .pick-center-panel { flex: 1; display: flex; flex-direction: column; justify-content: space-between; align-items: center; position: relative; }
+        .chat-box-pick { height: 28%; background: rgba(0, 0, 0, 0.8); border-top: 1px solid var(--lol-border); border-left: 2px solid var(--lol-gold); padding: 10px; font-size: 0.75rem; color: #a09b8c; display: flex; flex-direction: column; }
+        #pick-chat-messages { overflow-y: auto; flex-grow: 1; display: flex; flex-direction: column; justify-content: flex-end; }
+        
+        .pick-center-panel { flex: 1; display: flex; flex-direction: column; justify-content: space-between; align-items: center; }
         .pick-content { flex: 1; display: flex; justify-content: center; align-items: center; gap: 2%; width: 100%; padding: 0 10px; }
-        .champ-card { width: 30%; height: 70%; min-width: 80px; max-width: 160px; max-height: 250px; background: linear-gradient(to bottom, #1e2328, #010a13); border: 2px solid #5c5b57; border-radius: 5px; display: flex; flex-direction: column; justify-content: flex-end; align-items: center; transition: 0.3s; cursor: pointer; position: relative; overflow: hidden; background-size: cover; background-position: center; }
+        .champ-card { width: 30%; height: 70%; min-width: 80px; max-width: 160px; max-height: 250px; background: linear-gradient(to bottom, #1e2328, #010a13); border: 2px solid #5c5b57; border-radius: 5px; display: flex; flex-direction: column; justify-content: flex-end; align-items: center; cursor: pointer; transition: 0.3s; background-size: cover; background-position: center; }
         .champ-card:hover { border-color: var(--lol-gold); box-shadow: 0 0 15px rgba(200,170,110,0.6); transform: translateY(-5px); }
         .champ-name { width: 100%; text-align: center; font-size: 0.8rem; font-weight: bold; color: white; background: rgba(0,0,0,0.7); padding: 8px 0; border-top: 1px solid var(--lol-gold); }
-        
-        .start-game-btn-container { width: 100%; text-align: center; padding-bottom: 15px; flex-shrink: 0; }
-        #start-game-btn { padding: 10px 40px; background: transparent; border: 2px solid var(--lol-gold); color: var(--lol-gold); font-size: 1.1rem; font-weight: bold; cursor: pointer; transition: 0.3s; box-shadow: 0 0 10px var(--lol-gold); letter-spacing: 1px; }
-        #start-game-btn:hover { background: rgba(200, 170, 110, 0.2); box-shadow: 0 0 20px var(--lol-gold); }
+        .start-game-btn-container { width: 100%; text-align: center; padding-bottom: 15px; }
+        #start-game-btn { padding: 10px 40px; background: transparent; border: 2px solid var(--lol-gold); color: var(--lol-gold); font-size: 1.1rem; font-weight: bold; cursor: pointer; box-shadow: 0 0 10px var(--lol-gold); }
 
         .pick-right-panel { width: 25%; min-width: 140px; border-left: 1px solid rgba(200, 170, 110, 0.3); display: flex; flex-direction: column; background: rgba(0,0,0,0.4); }
         .pick-enemy-list { flex: 1; display: flex; flex-direction: column; padding: 10px 5px; gap: 8px; overflow-y: auto; align-items: flex-end; }
         .enemy-player { display: flex; align-items: center; justify-content: flex-end; gap: 8px; padding: 8px; width: 100%; background: rgba(40, 20, 20, 0.6); border: 1px solid #3c2020; border-radius: 5px; }
-        .enemy-img { width: 40px; height: 40px; border-radius: 50%; border: 2px solid #ff4e50; background-color: #111; background-size: cover; background-position: center; display: flex; justify-content: center; align-items: center; font-size: 1.1rem; flex-shrink: 0; }
-        .enemy-info { text-align: right; display: flex; flex-direction: column; overflow: hidden; }
-        .enemy-status { font-size: 0.65rem; color: #ff4e50; margin-bottom: 2px; font-weight: bold; }
-        .enemy-name { font-size: 0.85rem; font-weight: bold; color: #f0e6d2; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .enemy-img { width: 40px; height: 40px; border-radius: 50%; border: 2px solid #ff4e50; background-color: #111; display: flex; justify-content: center; align-items: center; font-size: 1.1rem; }
+        .enemy-info { text-align: right; display: flex; flex-direction: column; }
+        .enemy-status { font-size: 0.65rem; color: #ff4e50; font-weight: bold; }
+        .enemy-name { font-size: 0.85rem; font-weight: bold; color: #f0e6d2; }
 
-        /* 4단계: 첨부해주신 이미지를 배경으로 사용 */
-        #game-screen { background: url('image_799afc.png') center/cover no-repeat; opacity: 0; z-index: 1; pointer-events: none; flex-direction: column; justify-content: space-between; }
+        /* 4단계: 인게임 및 미니게임 스타일 */
+        #game-screen { background: url('image_799afc.png') center/cover no-repeat; opacity: 0; z-index: 1; pointer-events: none; flex-direction: column; justify-content: space-between; position: relative; }
         
-        /* 인게임 채팅창 오버레이 디자인 (구역 분리 적용) */
-        .ingame-chat { 
-            position: absolute; bottom: 85px; left: 15px; width: 35%; max-width: 280px; 
-            background: rgba(0,0,0,0.5); /* 배경 반투명화 */
-            padding: 8px; font-size: 0.75rem; text-shadow: 1px 1px 1px black; 
-            border-left: 2px solid var(--lol-blue); line-height: 1.4; 
-            display: flex; flex-direction: column; max-height: 180px; 
-        }
+        /* 캔버스 및 미니게임 조작계 */
+        canvas { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 1; display: block; }
+        #hp-board { position: absolute; top: 20px; left: 50%; transform: translateX(-50%); width: 50%; max-width: 300px; height: 15px; background: #333; border: 2px solid #c8aa6e; border-radius: 5px; z-index: 10; }
+        #hp-bar { width: 100%; height: 100%; background: #2ecc71; border-radius: 3px; transition: width 0.2s, background-color 0.2s; }
+        #score-display { position: absolute; top: 45px; left: 50%; transform: translateX(-50%); color: #c8aa6e; font-weight: bold; font-size: 1.1rem; z-index: 10; text-shadow: 1px 1px 2px #000; }
+        
+        /* 화면 좌우 터치 영역 (조작용) */
+        #touch-left { position: absolute; bottom: 0; left: 0; width: 50%; height: 70%; z-index: 5; }
+        #touch-right { position: absolute; bottom: 0; right: 0; width: 50%; height: 70%; z-index: 5; }
+
+        /* 게임 종료 화면 (랭킹판) */
+        #game-over-screen { display: none; position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.85); z-index: 20; flex-direction: column; align-items: center; justify-content: center; color: white; }
+        .modal-box { background: linear-gradient(135deg, #091428, #0a1428); border: 2px solid #c8aa6e; border-radius: 8px; padding: 25px; width: 80%; max-width: 350px; text-align: center; box-shadow: 0 0 20px rgba(200, 170, 110, 0.5); }
+        .modal-box h2 { color: #c8aa6e; margin-top: 0; margin-bottom: 5px; text-shadow: 0 0 5px #c8aa6e; }
+        .score-list { list-style: none; padding: 0; margin: 15px 0; text-align: left; background: rgba(0,0,0,0.4); padding: 10px; border-radius: 5px; border: 1px solid #1e282d; }
+        .score-list li { padding: 5px 0; border-bottom: 1px dashed #c8aa6e; font-size: 1em; display: flex; justify-content: space-between; }
+        .score-list li:last-child { border-bottom: none; }
+        .rank-name { color: #f0e6d2; font-weight: bold; }
+        .rank-score { color: #0ac8b9; font-weight: bold; }
+        .btn-group { display: flex; justify-content: space-between; gap: 10px; }
+        .btn-group button { flex: 1; padding: 12px 0; border: none; border-radius: 5px; font-weight: bold; font-size: 1em; cursor: pointer; }
+        .btn-retry { background-color: #0ac8b9; color: #091428; border: 2px solid #005a82; }
+        .btn-info { background-color: #2ecc71; color: #091428; border: 2px solid #1e824c; }
+
+        /* 기존 채팅 및 하단 UI 오버레이 */
+        .ingame-chat { position: absolute; bottom: 85px; left: 15px; width: 35%; max-width: 280px; background: rgba(0,0,0,0.5); padding: 8px; font-size: 0.75rem; text-shadow: 1px 1px 1px black; border-left: 2px solid var(--lol-blue); line-height: 1.4; display: flex; flex-direction: column; max-height: 180px; z-index: 10; pointer-events: auto; }
         #ingame-user-chats { flex-grow: 1; overflow-y: auto; margin-bottom: 5px; }
         #ingame-system-chats { flex-shrink: 0; border-top: 1px solid rgba(255, 255, 255, 0.2); padding-top: 5px; }
         
-        /* 하단 스킬 버튼 디자인 (오버레이 적용) */
-        .hud-container { display: flex; justify-content: center; align-items: flex-end; width: 100%; padding-bottom: 15px; }
-        .skill-bar { 
-            display: flex; gap: 10px; padding: 8px 15px; border-radius: 10px; position: relative;
-            background: rgba(1, 10, 19, 0.6); /* 뒷배경 그림이 보이도록 반투명화 */
-            border: 1px solid rgba(92, 91, 87, 0.5); border-top: 2px solid rgba(200, 170, 110, 0.8); 
-        }
-        
-        .level-tag { position: absolute; bottom: -5px; background: #010a13; border: 1px solid var(--lol-gold); border-radius: 50%; width: 2rem; height: 2rem; display: flex; justify-content: center; align-items: center; color: var(--lol-gold); font-weight: bold; font-size: 0.9rem; text-shadow: 0 0 5px var(--lol-gold); }
-        .level-11 { left: -10px; }
-        .level-15 { right: -10px; }
-
+        .hud-container { position: absolute; bottom: 0; left: 0; width: 100%; display: flex; justify-content: center; align-items: flex-end; padding-bottom: 15px; z-index: 10; pointer-events: auto; }
+        .skill-bar { display: flex; gap: 10px; padding: 8px 15px; border-radius: 10px; position: relative; background: rgba(1, 10, 19, 0.6); border: 1px solid rgba(92, 91, 87, 0.5); border-top: 2px solid rgba(200, 170, 110, 0.8); }
+        .level-tag { position: absolute; bottom: -5px; background: #010a13; border: 1px solid var(--lol-gold); border-radius: 50%; width: 2rem; height: 2rem; display: flex; justify-content: center; align-items: center; color: var(--lol-gold); font-weight: bold; font-size: 0.9rem; }
+        .level-11 { left: -10px; } .level-15 { right: -10px; }
         .skill-btn { display: flex; flex-direction: column; align-items: center; cursor: pointer; transition: 0.2s; }
-        .skill-icon { 
-            width: 45px; height: 45px; border-radius: 5px; background-size: cover; background-position: center; 
-            display: flex; justify-content: center; align-items: center; font-size: 1.2rem;
-            border: 2px solid rgba(92, 91, 87, 0.8); background-color: rgba(34, 34, 34, 0.7); 
-        }
-        .skill-btn:hover .skill-icon { border-color: var(--lol-gold); box-shadow: 0 0 15px var(--lol-gold); transform: translateY(-5px); }
+        .skill-icon { width: 45px; height: 45px; border-radius: 5px; background-size: cover; background-position: center; display: flex; justify-content: center; align-items: center; font-size: 1.2rem; border: 2px solid rgba(92, 91, 87, 0.8); background-color: rgba(34, 34, 34, 0.7); }
         .skill-key { background: rgba(0,0,0,0.8); color: white; font-size: 0.7rem; padding: 2px 5px; margin-top: -8px; z-index: 2; border: 1px solid #5c5b57; font-weight: bold; }
         .spell-icon { border-radius: 50%; border-color: #0bc6e3; }
     </style>
 </head>
 <body>
-
     <audio id="accept-sound" src="queue-pop.mp3" preload="auto"></audio>
     <audio id="lobby-bgm" src="lobby-bgm.mp3" loop preload="auto"></audio>
 
@@ -158,7 +131,6 @@
             <div class="login-left">
                 <div class="riot-logo">WEDDING GAMES</div>
                 <div class="login-title">로그인</div>
-                
                 <input type="text" id="nickname-input" class="modern-input" placeholder="소환사명 (닉네임) 입력">
                 <button class="btn-login" onclick="login(false)">로그인</button>
                 <button class="btn-guest" onclick="login(true)">게스트로 입장하기</button>
@@ -197,24 +169,26 @@
                 </div>
                 <div class="pick-right-panel">
                     <div class="pick-enemy-list">
-                        <div class="enemy-player"><div class="enemy-info"><span class="enemy-status">확정됨</span><span class="enemy-name">세금 폭탄</span></div><div class="enemy-img" style="background-image: url('enemy-1.jpg');">💰</div></div>
-                        <div class="enemy-player"><div class="enemy-info"><span class="enemy-status">확정됨</span><span class="enemy-name">잔소리 명절</span></div><div class="enemy-img" style="background-image: url('enemy-2.jpg');">🍳</div></div>
-                        <div class="enemy-player"><div class="enemy-info"><span class="enemy-status">확정됨</span><span class="enemy-name">끝없는 업무</span></div><div class="enemy-img" style="background-image: url('enemy-3.jpg');">💻</div></div>
-                        <div class="enemy-player"><div class="enemy-info"><span class="enemy-status">확정됨</span><span class="enemy-name">피곤한 인간관계</span></div><div class="enemy-img" style="background-image: url('enemy-4.jpg');">👤</div></div>
-                        <div class="enemy-player"><div class="enemy-info"><span class="enemy-status">확정됨</span><span class="enemy-name">미래 걱정</span></div><div class="enemy-img" style="background-image: url('enemy-5.jpg');">☁️</div></div>
+                        <div class="enemy-player"><div class="enemy-info"><span class="enemy-status">확정됨</span><span class="enemy-name">세금 폭탄</span></div><div class="enemy-img">💰</div></div>
+                        <div class="enemy-player"><div class="enemy-info"><span class="enemy-status">확정됨</span><span class="enemy-name">잔소리 명절</span></div><div class="enemy-img">🍳</div></div>
                     </div>
                 </div>
             </div>
         </div>
 
         <div id="game-screen" class="screen">
-            <div style="flex: 1;"></div> 
+            
+            <div id="hp-board"><div id="hp-bar"></div></div>
+            <div id="score-display">점수: 0</div>
+            <canvas id="gameCanvas"></canvas>
+            
+            <div id="touch-left"></div>
+            <div id="touch-right"></div>
 
             <div class="ingame-chat" id="ingame-chat-container">
                 <div id="ingame-user-chats"></div>
                 <div id="ingame-system-chats">
-                    <div style="color: #ff4e50;">[시스템] 새로운 랭크 게임(결혼)이 시작되었습니다.</div>
-                    <div style="color: #a09b8c;">[시스템] 하단의 스킬을 클릭하여 축하해 주세요.</div>
+                    <div style="color: #ff4e50;">[시스템] 하늘에서 떨어지는 장애물을 피하고 정수를 모으세요!</div>
                 </div>
             </div>
             
@@ -222,13 +196,22 @@
                 <div class="skill-bar">
                     <div class="level-tag level-11">11</div>
                     <div class="level-tag level-15">15</div>
+                    <div class="skill-btn" onclick="alert('갤러리 창이 열립니다.')"><div class="skill-icon">📸</div><div class="skill-key">Q</div></div>
+                    <div class="skill-btn" onclick="alert('지도 창이 열립니다.')"><div class="skill-icon">🗺️</div><div class="skill-key">W</div></div>
+                    <div class="skill-btn" onclick="alert('계좌 창이 열립니다.')"><div class="skill-icon">💳</div><div class="skill-key">E</div></div>
+                    <div class="skill-btn" onclick="alert('참석 여부 창이 열립니다.')"><div class="skill-icon" style="border-color: var(--lol-gold);">💌</div><div class="skill-key" style="color: var(--lol-gold); border-color: var(--lol-gold);">R</div></div>
+                </div>
+            </div>
+        </div>
 
-                    <div class="skill-btn" onclick="alert('갤러리 창이 열립니다.')"><div class="skill-icon" style="background-image: url('icon-q.jpg');">📸</div><div class="skill-key">Q</div></div>
-                    <div class="skill-btn" onclick="alert('지도 창이 열립니다.')"><div class="skill-icon" style="background-image: url('icon-w.jpg');">🗺️</div><div class="skill-key">W</div></div>
-                    <div class="skill-btn" onclick="alert('계좌 창이 열립니다.')"><div class="skill-icon" style="background-image: url('icon-e.jpg');">💳</div><div class="skill-key">E</div></div>
-                    <div class="skill-btn" onclick="alert('참석 여부 창이 열립니다.')"><div class="skill-icon" style="background-image: url('icon-r.jpg'); border-color: var(--lol-gold);">💌</div><div class="skill-key" style="color: var(--lol-gold); border-color: var(--lol-gold);">R</div></div>
-                    <div style="width: 2vw;"></div>
-                    <div class="skill-btn" onclick="alert('방명록 창이 열립니다.')"><div class="skill-icon spell-icon" style="background-image: url('icon-d.jpg');">📝</div><div class="skill-key">D</div></div>
+        <div id="game-over-screen">
+            <div class="modal-box">
+                <h2>게임 종료</h2>
+                <p style="margin:0; color:#a09b8c;">내 점수: <span id="final-score" style="color:#f0e6d2; font-weight:bold;">0</span>점</p>
+                <ul class="score-list" id="leaderboard"></ul>
+                <div class="btn-group">
+                    <button class="btn-retry" onclick="resetGame()">재도전 ↻</button>
+                    <button class="btn-info" onclick="alert('추가 결혼 정보창/갤러리로 이동합니다.')">정보 보기 💌</button>
                 </div>
             </div>
         </div>
@@ -238,7 +221,10 @@
     <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-database-compat.js"></script>
 
     <script>
-        // 발급받은 Firebase 설정
+        // 전역 플레이어 닉네임 변수
+        let globalPlayerName = "게스트";
+
+        // Firebase 설정 (기존과 동일)
         const firebaseConfig = {
             apiKey: "AIzaSyDIb9yvnedgTKP_mQGAPevZHMBc28eiKF8",
             authDomain: "lolwedding.firebaseapp.com",
@@ -248,74 +234,44 @@
             messagingSenderId: "728810675773",
             appId: "1:728810675773:web:2b59d63a69e833ea131454"
         };
-
-        // Firebase 초기화
         firebase.initializeApp(firebaseConfig);
         const db = firebase.database();
         const chatRef = db.ref('wedding_lobby_logs');
 
-        // DB에 접속 기록이 추가될 때마다 실행
+        // 채팅 시스템 연동
         chatRef.on('child_added', (snapshot) => {
             const data = snapshot.val();
-            
-            // 3단계(픽창) 채팅 추가
             const pickChatBox = document.getElementById('pick-chat-messages');
-            if (pickChatBox) {
-                pickChatBox.innerHTML += `<div style="margin-bottom: 3px; font-weight: normal;"><span style="color: #0bc6e3;">${data.name}</span>님이 로비에 접속하셨습니다.</div>`;
-                pickChatBox.scrollTop = pickChatBox.scrollHeight;
-            }
-            
-            // 4단계(인게임) 유저 전용 채팅 구역에 추가
+            if (pickChatBox) { pickChatBox.innerHTML += `<div style="margin-bottom: 3px;"><span style="color: #0bc6e3;">${data.name}</span>님이 로비에 접속하셨습니다.</div>`; pickChatBox.scrollTop = pickChatBox.scrollHeight; }
             const userChatBox = document.getElementById('ingame-user-chats');
-            if (userChatBox) {
-                userChatBox.innerHTML += `<div style="color: #0bc6e3;">[전체] <span style="font-weight:bold;">${data.name}</span>: 웨딩홀에 접속했습니다!</div>`;
-                userChatBox.scrollTop = userChatBox.scrollHeight;
-            }
+            if (userChatBox) { userChatBox.innerHTML += `<div style="color: #0bc6e3;">[전체] <span style="font-weight:bold;">${data.name}</span>: 웨딩홀에 접속했습니다!</div>`; userChatBox.scrollTop = userChatBox.scrollHeight; }
         });
 
-        // 초기화 시 클라이언트 화면도 비우기
-        chatRef.on('child_removed', () => {
-            document.getElementById('pick-chat-messages').innerHTML = '';
-            const userChatBox = document.getElementById('ingame-user-chats');
-            if (userChatBox) userChatBox.innerHTML = '';
-        });
-
-        // 로그인 기능
+        // 1. 로그인 단계 (닉네임 저장 추가)
         function login(isGuest) {
-            let nickname = "게스트";
             if (!isGuest) {
                 const inputVal = document.getElementById('nickname-input').value.trim();
-                if (inputVal === "") {
-                    alert("소환사명을 입력해주세요.");
-                    return;
-                }
-                nickname = inputVal;
+                if (inputVal === "") return alert("소환사명을 입력해주세요.");
+                globalPlayerName = inputVal;
             }
-
-            if (nickname === "초기화비밀번호1234") {
-                chatRef.remove().then(() => alert("모든 방문자의 접속 기록이 초기화되었습니다."));
-                document.getElementById('nickname-input').value = ""; 
-                return; 
-            }
-
-            chatRef.push({ name: nickname, time: Date.now() });
+            
+            chatRef.push({ name: globalPlayerName, time: Date.now() });
 
             document.getElementById('login-screen').classList.add('hidden');
             document.getElementById('queue-screen').classList.remove('hidden');
-
             const sound = document.getElementById('accept-sound');
-            if (sound) sound.play().catch(e => console.log("효과음 재생 차단됨", e));
+            if (sound) sound.play().catch(e => console.log(e));
         }
 
         function goToPick() {
             const bgm = document.getElementById('lobby-bgm');
-            if (bgm) { bgm.volume = 0.3; bgm.play().catch(e => console.log("BGM 재생 차단됨", e)); }
-
+            if (bgm) { bgm.volume = 0.3; bgm.play().catch(e => console.log(e)); }
             document.getElementById('queue-screen').classList.add('hidden');
             const pickScreen = document.getElementById('pick-screen');
             pickScreen.style.opacity = '1'; pickScreen.style.pointerEvents = 'auto';
         }
 
+        // 2. 미니게임 시작 진입점
         function startGame() {
             const bgm = document.getElementById('lobby-bgm');
             if (bgm) bgm.pause();
@@ -325,6 +281,141 @@
             
             const gameScreen = document.getElementById('game-screen');
             gameScreen.style.opacity = '1'; gameScreen.style.pointerEvents = 'auto'; 
+            
+            initMiniGame(); // 미니게임 캔버스 동작 시작
+        }
+
+        // --- 3. 4단계 캔버스 미니게임 로직 엔진 ---
+        const canvas = document.getElementById('gameCanvas');
+        const ctx = canvas.getContext('2d');
+        let animationId;
+        
+        // 캔버스 사이즈 반응형 조정 (가로모드 대응)
+        function resizeCanvas() {
+            const wrapper = document.getElementById('game-screen');
+            canvas.width = wrapper.clientWidth;
+            canvas.height = wrapper.clientHeight;
+        }
+        window.addEventListener('resize', resizeCanvas);
+
+        let currentHP = 100;
+        let score = 0;
+        let isGameOver = false;
+        let frameCount = 0;
+        let objects = [];
+        let player = { x: 0, y: 0, width: 40, height: 40, speed: 7 };
+        let moveLeft = false; let moveRight = false;
+
+        document.getElementById('touch-left').addEventListener('touchstart', (e) => { e.preventDefault(); moveLeft = true; });
+        document.getElementById('touch-left').addEventListener('touchend', (e) => { e.preventDefault(); moveLeft = false; });
+        document.getElementById('touch-right').addEventListener('touchstart', (e) => { e.preventDefault(); moveRight = true; });
+        document.getElementById('touch-right').addEventListener('touchend', (e) => { e.preventDefault(); moveRight = false; });
+
+        function updateHPBar() {
+            const hpBar = document.getElementById('hp-bar');
+            let percentage = (currentHP / 100) * 100;
+            hpBar.style.width = percentage + '%';
+            hpBar.style.background = percentage <= 30 ? '#e74c3c' : '#2ecc71';
+        }
+
+        function spawnObject() {
+            let spawnRate = Math.max(20, 50 - Math.floor(score / 50)); 
+            if (frameCount % spawnRate === 0) {
+                let isEssence = Math.random() > 0.7; 
+                objects.push({
+                    x: Math.random() * (canvas.width - 30), y: -30, width: 30, height: 30,
+                    speed: Math.random() * 3 + 3 + (score / 300), 
+                    type: isEssence ? 'essence' : 'obstacle'
+                });
+            }
+        }
+
+        function gameLoop() {
+            if (isGameOver) return;
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            
+            if (moveLeft && player.x > 0) player.x -= player.speed;
+            if (moveRight && player.x < canvas.width - player.width) player.x += player.speed;
+            
+            // 아리(플레이어) 렌더링 (임시 흰색 박스)
+            ctx.fillStyle = '#f0e6d2';
+            ctx.fillRect(player.x, player.y, player.width, player.height);
+
+            spawnObject();
+            
+            for (let i = objects.length - 1; i >= 0; i--) {
+                let obj = objects[i];
+                obj.y += obj.speed;
+
+                // 정수/장애물 렌더링
+                ctx.fillStyle = obj.type === 'essence' ? '#0ac8b9' : '#e74c3c';
+                ctx.fillRect(obj.x, obj.y, obj.width, obj.height);
+
+                // 충돌 처리
+                if (player.x < obj.x + obj.width && player.x + player.width > obj.x &&
+                    player.y < obj.y + obj.height && player.y + player.height > obj.y) {
+                    
+                    if (obj.type === 'essence') {
+                        currentHP = Math.min(100, currentHP + 15);
+                        score += 50; 
+                    } else {
+                        currentHP -= 30; 
+                    }
+                    objects.splice(i, 1);
+                    updateHPBar();
+                    if (currentHP <= 0) gameOver();
+                } else if (obj.y > canvas.height) {
+                    objects.splice(i, 1);
+                }
+            }
+            
+            frameCount++;
+            if (frameCount % 10 === 0) {
+                score += 5;
+                document.getElementById('score-display').innerText = `점수: ${score}`;
+            }
+
+            animationId = requestAnimationFrame(gameLoop);
+        }
+
+        function initMiniGame() {
+            resizeCanvas();
+            player.x = canvas.width / 2;
+            player.y = canvas.height / 2 - 20; // 스킬 UI 위쪽인 중앙 부근에 배치
+            currentHP = 100; score = 0; frameCount = 0; objects = []; isGameOver = false;
+            updateHPBar();
+            document.getElementById('score-display').innerText = `점수: 0`;
+            gameLoop();
+        }
+
+        // 4. 게임 종료 및 리더보드 저장 연동
+        function gameOver() {
+            isGameOver = true;
+            cancelAnimationFrame(animationId);
+            document.getElementById('final-score').innerText = score;
+            saveAndDisplayRanking();
+            document.getElementById('game-over-screen').style.display = 'flex';
+        }
+
+        function saveAndDisplayRanking() {
+            let topScores = JSON.parse(localStorage.getItem('weddingGameScores')) || [];
+            topScores.push({ name: globalPlayerName, score: score });
+            topScores.sort((a, b) => b.score - a.score);
+            topScores = topScores.slice(0, 5);
+            localStorage.setItem('weddingGameScores', JSON.stringify(topScores));
+            
+            const leaderboardEl = document.getElementById('leaderboard');
+            leaderboardEl.innerHTML = ''; 
+            topScores.forEach((entry, index) => {
+                const li = document.createElement('li');
+                li.innerHTML = `<span class="rank-name">${index + 1}. ${entry.name}</span> <span class="rank-score">${entry.score}점</span>`;
+                leaderboardEl.appendChild(li);
+            });
+        }
+
+        function resetGame() {
+            document.getElementById('game-over-screen').style.display = 'none';
+            initMiniGame();
         }
     </script>
 </body>
