@@ -114,7 +114,9 @@
 
         .hit-effect { 
             position: absolute; width: 120px; height: 120px;
-            background: url('hit-effect.png') center/contain no-repeat;
+            /* contain을 cover로 변경하고, 테두리를 둥글게 깎는 border-radius 추가 */
+            background: url('hit-effect.png') center/cover no-repeat;
+            border-radius: 50%;
             pointer-events: none; 
             animation: popOut 0.5s forwards ease-out;
             transform: translate(-22px, -22px);
@@ -379,7 +381,8 @@
 
             if (targetType === 'teemo') {
                 target.style.background = "url('teemo-icon.png') center/contain no-repeat";
-                target.style.borderRadius = '0'; 
+               target.style.background = "url('teemo-icon.png') center/cover no-repeat"; 
+                target.style.borderRadius = '50%';
             } else if (targetType === 'groom') {
                 target.style.background = "url('groom-face.jpg') center/cover no-repeat";
                 target.style.border = "3px solid #0bc6e3"; 
@@ -416,6 +419,10 @@
                 document.getElementById('score-val').innerText = score;
                 area.appendChild(hitEffect);
                 target.remove(); 
+
+
+
+                
             };
 
             area.appendChild(target);
