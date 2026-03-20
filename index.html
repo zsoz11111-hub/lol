@@ -40,7 +40,7 @@
         .screen { position: absolute; width: 100%; height: 100%; top: 0; left: 0; transition: opacity 0.5s ease; display: flex; }
         .hidden { opacity: 0 !important; pointer-events: none; display: none !important; }
 
-        /* --- 1단계: 심플 모던 라이엇 로그인 화면 --- */
+        /* --- 1단계: 로그인 화면 --- */
         #login-screen { display: flex; flex-direction: row; background: #fff; z-index: 4; }
         .login-left { width: 35%; min-width: 200px; max-width: 400px; background: #fff; display: flex; flex-direction: column; align-items: center; justify-content: center; color: #111; padding: 0 15px; }
         .login-right { flex: 1; background: #000 url('login-bg.jpg?v=1') center/cover no-repeat; }
@@ -76,7 +76,6 @@
         .pick-player-status { font-size: 0.65rem; color: #0bc6e3; margin-bottom: 2px; font-weight: bold; }
         .pick-player-name { font-size: 0.85rem; font-weight: bold; color: white; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
         
-        /* 3단계 채팅창 */
         .chat-box-pick { height: 28%; min-height: 80px; background: rgba(0, 0, 0, 0.8); border-top: 1px solid var(--lol-border); border-left: 2px solid var(--lol-gold); padding: 10px; font-size: 0.75rem; color: #a09b8c; display: flex; flex-direction: column; justify-content: flex-end; }
         #pick-chat-messages { margin-bottom: 5px; font-weight: bold; overflow-y: auto; flex-grow: 1; display: flex; flex-direction: column; }
 
@@ -97,7 +96,7 @@
         .enemy-status { font-size: 0.65rem; color: #ff4e50; margin-bottom: 2px; font-weight: bold; }
         .enemy-name { font-size: 0.85rem; font-weight: bold; color: #f0e6d2; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 
-        /* --- 4단계: '티모를 잡아라' 미니게임 화면 --- */
+        /* --- 4단계: 티모 미니게임 화면 --- */
         #game-screen { background: url('teemo-bg.jpg') center/cover no-repeat; opacity: 0; z-index: 1; pointer-events: none; flex-direction: column; position: relative; }
         
         #minigame-ui-top { display: flex; justify-content: space-between; padding: 15px 30px; background: linear-gradient(to bottom, rgba(0,0,0,0.8), transparent); width: 100%; position: absolute; top: 0; z-index: 10; pointer-events: none; }
@@ -106,7 +105,7 @@
         .ui-value { font-size: 1.5rem; color: white; font-weight: 900; }
         #time-val { color: #ff4e50; }
 
-        #play-area { flex: 1; position: relative; width: 100%; height: 100%; overflow: hidden; }
+        #play-area { flex: 1; position: relative; width: 100%; height: 100%; overflow: hidden; z-index: 5; }
         
         .hit-effect { 
             position: absolute; width: 120px; height: 120px;
@@ -226,7 +225,7 @@
     <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-database-compat.js"></script>
 
     <script>
-        // --- 파이어베이스 설정 및 연동 (선생님 코드 원본 복구) ---
+        // --- 1. 파이어베이스 초기화 및 로그인/화면전환 코드 ---
         const firebaseConfig = {
             apiKey: "AIzaSyDIb9yvnedgTKP_mQGAPevZHMBc28eiKF8",
             authDomain: "lolwedding.firebaseapp.com",
@@ -241,24 +240,19 @@
         const db = firebase.database();
         const chatRef = db.ref('wedding_lobby_logs');
 
-        // 파이어베이스에 새 기록이 올라올 때마다 3단계 채팅창 업데이트
         chatRef.on('child_added', (snapshot) => {
             const data = snapshot.val();
             const pickChatBox = document.getElementById('pick-chat-messages');
             if (pickChatBox) {
-                // 새로운 메시지가 기존 내용 뒤에 누적됨
-                pickChatBox.innerHTML += `<div style="margin-bottom: 3px; font-weight: normal;"><span style="color: #0bc6e3;">${data.name}</span>님이 로비에 접속하셨습니다.</div>`;
-                // 채팅이 추가될 때마다 자동으로 맨 아래로 스크롤
+                pickChatBox.innerHTML += `<div style="margin-bottom: 3px; font-weight: normal;"><span style="color: #0bc6e3;">${data.name}</span>님이 접속하셨습니다.</div>`;
                 pickChatBox.scrollTop = pickChatBox.scrollHeight;
             }
         });
 
-        // 초기화 명령 시 화면 지우기
         chatRef.on('child_removed', () => {
             document.getElementById('pick-chat-messages').innerHTML = '';
         });
 
-        // --- 로그인 및 화면 전환 ---
         function login(isGuest) {
             let nickname = "게스트";
             if (!isGuest) {
@@ -270,26 +264,24 @@
                 nickname = inputVal;
             }
 
-            // 숨겨진 초기화 기능
             if (nickname === "초기화비밀번호1234") {
                 chatRef.remove().then(() => alert("모든 방문자의 접속 기록이 초기화되었습니다."));
                 document.getElementById('nickname-input').value = ""; 
                 return; 
             }
 
-            // 파이어베이스 DB로 접속 기록 푸시!
             chatRef.push({ name: nickname, time: Date.now() });
 
             document.getElementById('login-screen').classList.add('hidden');
             document.getElementById('queue-screen').classList.remove('hidden');
 
             const sound = document.getElementById('accept-sound');
-            if (sound) sound.play().catch(e => console.log("효과음 재생 차단됨", e));
+            if (sound) sound.play().catch(e => console.log("효과음 차단됨", e));
         }
 
         function goToPick() {
             const bgm = document.getElementById('lobby-bgm');
-            if (bgm) { bgm.volume = 0.3; bgm.play().catch(e => console.log("BGM 재생 차단됨", e)); }
+            if (bgm) { bgm.volume = 0.3; bgm.play().catch(e => console.log("BGM 차단됨", e)); }
 
             document.getElementById('queue-screen').classList.add('hidden');
             const pickScreen = document.getElementById('pick-screen');
@@ -307,7 +299,7 @@
             gameScreen.style.opacity = '1'; gameScreen.style.pointerEvents = 'auto'; 
         }
 
-        // --- 티모 미니게임 스크립트 ---
+        // --- 2. 티모 미니게임 핵심 코드 (절대 잘리면 안 되는 부분!) ---
         let score = 0;
         let timeLeft = 15; 
         let gameInterval;
