@@ -1,0 +1,36 @@
+{
+  "rules": {
+    ".read": false,
+    ".write": false,
+    "lol_wedding_v2": {
+      "visits": {
+        ".indexOn": ["time"],
+        ".read": "auth != null && query.orderByChild == 'time' && query.limitToLast != null && query.limitToLast <= 30",
+        "$uid": {
+          ".read": "auth != null && auth.uid == $uid",
+          ".write": "auth != null && auth.uid == $uid && newData.exists()",
+          ".validate": "newData.hasChildren(['name', 'time'])",
+          "name": {".validate": "newData.isString() && newData.val().length > 0 && newData.val().length <= 16"},
+          "time": {".validate": "newData.isNumber() && newData.val() <= now + 5000 && newData.val() >= now - 60000"},
+          "$other": {".validate": false}
+        }
+      },
+      "scores": {
+        ".indexOn": ["score"],
+        ".read": "auth != null && query.orderByChild == 'score' && query.limitToLast != null && query.limitToLast <= 20",
+        "$uid": {
+          ".read": "auth != null && auth.uid == $uid",
+          ".write": "auth != null && auth.uid == $uid && newData.exists() && (!data.exists() || newData.child('score').val() >= data.child('score').val())",
+          ".validate": "newData.hasChildren(['name', 'score', 'cs', 'cannon', 'maxCombo', 'updatedAt']) && newData.child('cannon').val() <= newData.child('cs').val() && newData.child('maxCombo').val() <= newData.child('cs').val()",
+          "name": {".validate": "newData.isString() && newData.val().length > 0 && newData.val().length <= 16"},
+          "score": {".validate": "newData.isNumber() && newData.val() >= 0 && newData.val() <= 30000 && newData.val() % 20 == 0"},
+          "cs": {".validate": "newData.isNumber() && newData.val() >= 0 && newData.val() <= 70 && newData.val() % 1 == 0"},
+          "cannon": {".validate": "newData.isNumber() && newData.val() >= 0 && newData.val() <= 70 && newData.val() % 1 == 0"},
+          "maxCombo": {".validate": "newData.isNumber() && newData.val() >= 0 && newData.val() <= 70 && newData.val() % 1 == 0"},
+          "updatedAt": {".validate": "newData.isNumber() && newData.val() <= now + 5000 && newData.val() >= now - 60000"},
+          "$other": {".validate": false}
+        }
+      }
+    }
+  }
+}
